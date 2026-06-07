@@ -19,22 +19,18 @@ public class IPQueryImpl {
     }
 
     public Set<String> getUniqueIPs(Date after, Date before) {
-
         return null;
     }
 
     public Set<String> getIPsForUser(String user, Date after, Date before) {
-
         return null;
     }
 
     public Set<String> getIPsForEvent(Event event, Date after, Date before) {
-
         return null;
     }
 
     public Set<String> getIPsForStatus(Status status, Date after, Date before) {
-
         return null;
     }
 }

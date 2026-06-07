@@ -10,7 +10,5 @@ public class Solution {
 
     public static void main(String[] args) {
         LogReader logReader = new LogReader(Paths.get(LOG_FILE_PATH));
-
-        logReader.getLogList().forEach(System.out::println);
     }
 }
