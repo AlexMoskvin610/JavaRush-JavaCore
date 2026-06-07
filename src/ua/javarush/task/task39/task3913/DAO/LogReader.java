@@ -29,7 +29,7 @@ public class LogReader {
     private void readLogs(Path logDir) {
         if (Files.isRegularFile(logDir)) {
             if (logDir.toString().endsWith(".log")) {
-                readFile(LOGS_PATH);
+                readFile(logDir);
             }
         } else if (Files.isDirectory(logDir)) {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(logDir, "*.log")) {
@@ -42,8 +42,8 @@ public class LogReader {
         }
     }
 
-    private void readFile(Path LOGS_PATH) {
-        try (BufferedReader reader = Files.newBufferedReader(this.LOGS_PATH)) {
+    private void readFile(Path path) {
+        try (BufferedReader reader = Files.newBufferedReader(path)) {
             String line;
 
             while ((line = reader.readLine()) != null) {
