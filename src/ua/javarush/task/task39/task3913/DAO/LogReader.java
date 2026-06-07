@@ -5,6 +5,8 @@ import ua.javarush.task.task39.task3913.Event;
 import ua.javarush.task.task39.task3913.Status;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.ParseException;
@@ -21,11 +23,27 @@ public class LogReader {
         this.LOGS_PATH = logPath;
         this.logs = new ArrayList<>();
 
-        readFile();
+        readLogs(LOGS_PATH);
     }
 
-    private void readFile() {
-        try (BufferedReader reader = Files.newBufferedReader(LOGS_PATH)) {
+    private void readLogs(Path logDir) {
+        if (Files.isRegularFile(logDir)) {
+            if (logDir.toString().endsWith(".log")) {
+                readFile(LOGS_PATH);
+            }
+        } else if (Files.isDirectory(logDir)) {
+            try (DirectoryStream<Path> stream = Files.newDirectoryStream(logDir, "*.log")) {
+                for (Path entry : stream) {
+                    readFile(entry);
+                }
+            } catch (IOException e) {
+                // ignore
+            }
+        }
+    }
+
+    private void readFile(Path LOGS_PATH) {
+        try (BufferedReader reader = Files.newBufferedReader(this.LOGS_PATH)) {
             String line;
 
             while ((line = reader.readLine()) != null) {
@@ -44,7 +62,7 @@ public class LogReader {
     private LogEntry parseLogLine(String line) {
         if (line == null || line.isEmpty()) return null;
 
-        String[] parts = line.split("\\t");
+        String[] parts = line.split("\t");
 
         if (parts.length < 5) return null;
 

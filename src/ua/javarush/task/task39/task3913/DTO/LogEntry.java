@@ -23,6 +23,30 @@ public class LogEntry {
         this.status = status;
     }
 
+    public String getIp() {
+        return ip;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public int getTaskNumber() {
+        return taskNumber;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
     @Override
     public String toString() {
         String eventString = taskNumber == 0 ? event.name() : event.name() + " " + taskNumber;
