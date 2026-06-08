@@ -1,12 +1,14 @@
 package ua.javarush.task.task39.task3913.Utils;
 
 import ua.javarush.task.task39.task3913.DAO.LogReader;
+import ua.javarush.task.task39.task3913.DTO.LogEntry;
 import ua.javarush.task.task39.task3913.Event;
 
 import java.nio.file.Path;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class EventQueryImpl {
     private final LogReader logReader;
@@ -16,7 +18,10 @@ public class EventQueryImpl {
     }
 
     public int getNumberOfAllEvents(Date after, Date before) {
-        return 0;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .map(LogEntry::getEvent)
+                .collect(Collectors.toSet()).size();
     }
 
     public Set<Event> getAllEvents(Date after, Date before) {
