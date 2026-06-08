@@ -5,6 +5,7 @@ import ua.javarush.task.task39.task3913.DAO.LogReader;
 import java.nio.file.Path;
 import java.util.Date;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UserQueryImpl {
     private final LogReader logReader;
@@ -14,11 +15,16 @@ public class UserQueryImpl {
     }
 
     public Set<String> getAllUsers() {
-        return null;
+        return logReader.getLogs().stream()
+                .map(log -> log.getUser())
+                .collect(Collectors.toSet());
     }
 
     public int getNumberOfUsers(Date after, Date before) {
-        return 0;
+        return logReader.getLogs().stream()
+                .filter(log->isDateInRange(log.getDate(), after, before))
+                .map(log->log.getUser())
+                .collect(Collectors.toSet()).size();
     }
 
     public int getNumberOfUserEvents(String user, Date after, Date before) {
@@ -55,5 +61,12 @@ public class UserQueryImpl {
 
     public Set<String> getDoneTaskUsers(Date after, Date before, int task) {
         return null;
+    }
+
+    private boolean isDateInRange(Date date, Date after, Date before) {
+        if (after != null && date.getTime() < after.getTime()) return false;
+        if (before != null && date.getTime() > before.getTime()) return false;
+
+        return true;
     }
 }

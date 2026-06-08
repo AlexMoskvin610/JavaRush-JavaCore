@@ -55,6 +55,7 @@ public class IPQueryImpl {
     private boolean isDateInRange(Date date, Date after, Date before) {
         if (after != null && date.getTime() < after.getTime()) return false;
         if (before != null && date.getTime() > before.getTime()) return false;
+
         return true;
     }
 }
