@@ -3,6 +3,7 @@ package ua.javarush.task.task39.task3913.Utils;
 import ua.javarush.task.task39.task3913.DAO.LogReader;
 import ua.javarush.task.task39.task3913.DTO.LogEntry;
 import ua.javarush.task.task39.task3913.Event;
+import ua.javarush.task.task39.task3913.Status;
 
 import java.nio.file.Path;
 import java.util.Date;
@@ -25,7 +26,11 @@ public class DataQueryImpl {
     }
 
     public Set<Date> getDatesWhenSomethingFailed(Date after, Date before) {
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(logEntry -> logEntry.getStatus().equals(Status.FAILED))
+                .map(LogEntry::getDate)
+                .collect(Collectors.toSet());
     }
 
     public Set<Date> getDatesWhenErrorHappened(Date after, Date before) {
