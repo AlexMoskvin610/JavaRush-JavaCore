@@ -1,25 +1,30 @@
 package ua.javarush.task.task39.task3913;
 
 import ua.javarush.task.task39.task3913.Utils.DataQueryImpl;
+import ua.javarush.task.task39.task3913.Utils.EventQueryImpl;
 import ua.javarush.task.task39.task3913.Utils.IPQueryImpl;
 import ua.javarush.task.task39.task3913.Utils.UserQueryImpl;
 import ua.javarush.task.task39.task3913.query.DateQuery;
+import ua.javarush.task.task39.task3913.query.EventQuery;
 import ua.javarush.task.task39.task3913.query.IPQuery;
 import ua.javarush.task.task39.task3913.query.UserQuery;
 
 import java.nio.file.Path;
 import java.util.Date;
+import java.util.Map;
 import java.util.Set;
 
-public class LogParser implements IPQuery, UserQuery, DateQuery {
+public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery {
     private final IPQueryImpl ipQuery;
     private final UserQueryImpl userQuery;
     private final DataQueryImpl dataQuery;
+    private final EventQueryImpl eventQuery;
 
     public LogParser(Path logDir) {
         this.ipQuery = new IPQueryImpl(logDir);
         this.userQuery = new UserQueryImpl(logDir);
         this.dataQuery = new DataQueryImpl(logDir);
+        this.eventQuery = new EventQueryImpl(logDir);
     }
 
     /// ////////////////////////IPQuery////////////////////////////////////////////////////////////////
@@ -143,5 +148,56 @@ public class LogParser implements IPQuery, UserQuery, DateQuery {
     @Override
     public Set<Date> getDatesWhenUserDownloadedPlugin(String user, Date after, Date before) {
         return dataQuery.getDatesWhenUserDownloadedPlugin(user, after, before);
+    }
+
+    /// //////////////EventQuery////////////////////////////////////////////////////////////////////
+    @Override
+    public int getNumberOfAllEvents(Date after, Date before) {
+        return eventQuery.getNumberOfAllEvents(after, before);
+    }
+
+    @Override
+    public Set<Event> getAllEvents(Date after, Date before) {
+        return eventQuery.getAllEvents(after, before);
+    }
+
+    @Override
+    public Set<Event> getEventsForIP(String ip, Date after, Date before) {
+        return eventQuery.getEventsForIP(ip, after, before);
+    }
+
+    @Override
+    public Set<Event> getEventsForUser(String user, Date after, Date before) {
+        return eventQuery.getEventsForUser(user, after, before);
+    }
+
+    @Override
+    public Set<Event> getFailedEvents(Date after, Date before) {
+        return eventQuery.getFailedEvents(after, before);
+    }
+
+    @Override
+    public Set<Event> getErrorEvents(Date after, Date before) {
+        return eventQuery.getErrorEvents(after, before);
+    }
+
+    @Override
+    public int getNumberOfAttemptToSolveTask(int task, Date after, Date before) {
+        return eventQuery.getNumberOfAttemptToSolveTask(task, after, before);
+    }
+
+    @Override
+    public int getNumberOfSuccessfulAttemptToSolveTask(int task, Date after, Date before) {
+        return eventQuery.getNumberOfSuccessfulAttemptToSolveTask(task, after, before);
+    }
+
+    @Override
+    public Map<Integer, Integer> getAllSolvedTasksAndTheirNumber(Date after, Date before) {
+        return eventQuery.getAllSolvedTasksAndTheirNumber(after, before);
+    }
+
+    @Override
+    public Map<Integer, Integer> getAllDoneTasksAndTheirNumber(Date after, Date before) {
+        return eventQuery.getAllDoneTasksAndTheirNumber(after, before);
     }
 }
