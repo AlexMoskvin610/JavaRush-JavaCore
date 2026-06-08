@@ -18,14 +18,14 @@ public class EventQueryImpl {
     }
 
     public int getNumberOfAllEvents(Date after, Date before) {
-        return logReader.getLogs().stream()
-                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
-                .map(LogEntry::getEvent)
-                .collect(Collectors.toSet()).size();
+        return getAllEvents(after, before).size();
     }
 
     public Set<Event> getAllEvents(Date after, Date before) {
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .map(LogEntry::getEvent)
+                .collect(Collectors.toSet());
     }
 
     public Set<Event> getEventsForIP(String ip, Date after, Date before) {
