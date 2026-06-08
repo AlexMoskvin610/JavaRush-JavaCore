@@ -1,7 +1,9 @@
 package ua.javarush.task.task39.task3913;
 
+import ua.javarush.task.task39.task3913.Utils.DataQueryImpl;
 import ua.javarush.task.task39.task3913.Utils.IPQueryImpl;
 import ua.javarush.task.task39.task3913.Utils.UserQueryImpl;
+import ua.javarush.task.task39.task3913.query.DateQuery;
 import ua.javarush.task.task39.task3913.query.IPQuery;
 import ua.javarush.task.task39.task3913.query.UserQuery;
 
@@ -9,13 +11,15 @@ import java.nio.file.Path;
 import java.util.Date;
 import java.util.Set;
 
-public class LogParser implements IPQuery, UserQuery {
+public class LogParser implements IPQuery, UserQuery, DateQuery {
     private final IPQueryImpl ipQuery;
     private final UserQueryImpl userQuery;
+    private final DataQueryImpl dataQuery;
 
     public LogParser(Path logDir) {
         this.ipQuery = new IPQueryImpl(logDir);
         this.userQuery = new UserQueryImpl(logDir);
+        this.dataQuery = new DataQueryImpl(logDir);
     }
 
     /// ////////////////////////IPQuery////////////////////////////////////////////////////////////////
@@ -98,5 +102,46 @@ public class LogParser implements IPQuery, UserQuery {
     @Override
     public Set<String> getDoneTaskUsers(Date after, Date before, int task) {
         return userQuery.getDoneTaskUsers(after, before, task);
+    }
+
+    /// /////////////DataQuery/////////////////////////////////////////////////////////////////
+    @Override
+    public Set<Date> getDatesForUserAndEvent(String user, Event event, Date after, Date before) {
+        return dataQuery.getDatesForUserAndEvent(user, event, after, before);
+    }
+
+    @Override
+    public Set<Date> getDatesWhenSomethingFailed(Date after, Date before) {
+        return dataQuery.getDatesWhenSomethingFailed(after, before);
+    }
+
+    @Override
+    public Set<Date> getDatesWhenErrorHappened(Date after, Date before) {
+        return dataQuery.getDatesWhenErrorHappened(after, before);
+    }
+
+    @Override
+    public Date getDateWhenUserLoggedFirstTime(String user, Date after, Date before) {
+        return dataQuery.getDateWhenUserLoggedFirstTime(user, after, before);
+    }
+
+    @Override
+    public Date getDateWhenUserSolvedTask(String user, int task, Date after, Date before) {
+        return dataQuery.getDateWhenUserSolvedTask(user, task, after, before);
+    }
+
+    @Override
+    public Date getDateWhenUserDoneTask(String user, int task, Date after, Date before) {
+        return dataQuery.getDateWhenUserDoneTask(user, task, after, before);
+    }
+
+    @Override
+    public Set<Date> getDatesWhenUserWroteMessage(String user, Date after, Date before) {
+        return dataQuery.getDatesWhenUserWroteMessage(user, after, before);
+    }
+
+    @Override
+    public Set<Date> getDatesWhenUserDownloadedPlugin(String user, Date after, Date before) {
+        return dataQuery.getDatesWhenUserDownloadedPlugin(user, after, before);
     }
 }
