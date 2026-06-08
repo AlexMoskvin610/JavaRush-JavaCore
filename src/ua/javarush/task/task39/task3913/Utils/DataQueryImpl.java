@@ -6,7 +6,6 @@ import ua.javarush.task.task39.task3913.Event;
 import ua.javarush.task.task39.task3913.Status;
 
 import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -76,11 +75,21 @@ public class DataQueryImpl {
     }
 
     public Set<Date> getDatesWhenUserWroteMessage(String user, Date after, Date before) {
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(logEntry -> logEntry.getUser().equalsIgnoreCase(user)
+                        && logEntry.getEvent().equals(Event.WRITE_MESSAGE))
+                .map(LogEntry::getDate)
+                .collect(Collectors.toSet());
     }
 
     public Set<Date> getDatesWhenUserDownloadedPlugin(String user, Date after, Date before){
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(logEntry -> logEntry.getUser().equalsIgnoreCase(user)
+                        && logEntry.getEvent().equals(Event.DOWNLOAD_PLUGIN))
+                .map(LogEntry::getDate)
+                .collect(Collectors.toSet());
     }
 
     private boolean isDateInRange(Date date, Date after, Date before) {
