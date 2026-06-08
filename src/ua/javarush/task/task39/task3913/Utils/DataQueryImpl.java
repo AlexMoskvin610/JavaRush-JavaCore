@@ -34,7 +34,11 @@ public class DataQueryImpl {
     }
 
     public Set<Date> getDatesWhenErrorHappened(Date after, Date before) {
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(logEntry -> logEntry.getStatus().equals(Status.ERROR))
+                .map(LogEntry::getDate)
+                .collect(Collectors.toSet());
     }
 
     public Date getDateWhenUserLoggedFirstTime(String user, Date after, Date before) {
