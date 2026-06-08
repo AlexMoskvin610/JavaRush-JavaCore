@@ -3,6 +3,7 @@ package ua.javarush.task.task39.task3913.Utils;
 import ua.javarush.task.task39.task3913.DAO.LogReader;
 import ua.javarush.task.task39.task3913.DTO.LogEntry;
 import ua.javarush.task.task39.task3913.Event;
+import ua.javarush.task.task39.task3913.Status;
 
 import java.nio.file.Path;
 import java.util.Date;
@@ -29,19 +30,35 @@ public class EventQueryImpl {
     }
 
     public Set<Event> getEventsForIP(String ip, Date after, Date before) {
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(logEntry -> logEntry.getIp().equalsIgnoreCase(ip))
+                .map(LogEntry::getEvent)
+                .collect(Collectors.toSet());
     }
 
     public Set<Event> getEventsForUser(String user, Date after, Date before) {
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(logEntry -> logEntry.getUser().equalsIgnoreCase(user))
+                .map(LogEntry::getEvent)
+                .collect(Collectors.toSet());
     }
 
     public Set<Event> getFailedEvents(Date after, Date before) {
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(logEntry -> logEntry.getStatus().equals(Status.FAILED))
+                .map(LogEntry::getEvent)
+                .collect(Collectors.toSet());
     }
 
     public Set<Event> getErrorEvents(Date after, Date before) {
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(logEntry -> logEntry.getStatus().equals(Status.ERROR))
+                .map(LogEntry::getEvent)
+                .collect(Collectors.toSet());
     }
 
     public int getNumberOfAttemptToSolveTask(int task, Date after, Date before) {
