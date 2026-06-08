@@ -78,11 +78,21 @@ public class EventQueryImpl {
     }
 
     public Map<Integer, Integer> getAllSolvedTasksAndTheirNumber(Date after, Date before) {
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(log -> log.getEvent().equals(Event.SOLVE_TASK))
+                .collect(Collectors.groupingBy(
+                        LogEntry::getTaskNumber,
+                        Collectors.summingInt(log -> 1)));
     }
 
     public Map<Integer, Integer> getAllDoneTasksAndTheirNumber(Date after, Date before) {
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(log -> log.getEvent().equals(Event.DONE_TASK))
+                .collect(Collectors.groupingBy(
+                        LogEntry::getTaskNumber,
+                        Collectors.summingInt(log -> 1)));
     }
 
     private boolean isDateInRange(Date date, Date after, Date before) {
