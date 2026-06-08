@@ -54,27 +54,51 @@ public class UserQueryImpl {
     }
 
     public Set<String> getDownloadedPluginUsers(Date after, Date before) {
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(logEntry -> logEntry.getEvent().equals(Event.DOWNLOAD_PLUGIN))
+                .map(LogEntry::getUser)
+                .collect(Collectors.toSet());
     }
 
     public Set<String> getWroteMessageUsers(Date after, Date before) {
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(logEntry -> logEntry.getEvent().equals(Event.WRITE_MESSAGE))
+                .map(LogEntry::getUser)
+                .collect(Collectors.toSet());
     }
 
     public Set<String> getSolvedTaskUsers(Date after, Date before) {
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(logEntry -> logEntry.getEvent().equals(Event.SOLVE_TASK))
+                .map(LogEntry::getUser)
+                .collect(Collectors.toSet());
     }
 
     public Set<String> getSolvedTaskUsers(Date after, Date before, int task) {
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(logEntry -> logEntry.getEvent().equals(Event.SOLVE_TASK) && logEntry.getTaskNumber()==task)
+                .map(LogEntry::getUser)
+                .collect(Collectors.toSet());
     }
 
     public Set<String> getDoneTaskUsers(Date after, Date before) {
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(logEntry -> logEntry.getEvent().equals(Event.DONE_TASK))
+                .map(LogEntry::getUser)
+                .collect(Collectors.toSet());
     }
 
     public Set<String> getDoneTaskUsers(Date after, Date before, int task) {
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(logEntry -> logEntry.getEvent().equals(Event.DONE_TASK) && logEntry.getTaskNumber()==task)
+                .map(LogEntry::getUser)
+                .collect(Collectors.toSet());
     }
 
     private boolean isDateInRange(Date date, Date after, Date before) {
