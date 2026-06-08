@@ -1,6 +1,8 @@
 package ua.javarush.task.task39.task3913.Utils;
 
 import ua.javarush.task.task39.task3913.DAO.LogReader;
+import ua.javarush.task.task39.task3913.DTO.LogEntry;
+import ua.javarush.task.task39.task3913.Event;
 
 import java.nio.file.Path;
 import java.util.Date;
@@ -16,27 +18,39 @@ public class UserQueryImpl {
 
     public Set<String> getAllUsers() {
         return logReader.getLogs().stream()
-                .map(log -> log.getUser())
+                .map(LogEntry::getUser)
                 .collect(Collectors.toSet());
     }
 
     public int getNumberOfUsers(Date after, Date before) {
         return logReader.getLogs().stream()
                 .filter(log->isDateInRange(log.getDate(), after, before))
-                .map(log->log.getUser())
+                .map(LogEntry::getUser)
                 .collect(Collectors.toSet()).size();
     }
 
     public int getNumberOfUserEvents(String user, Date after, Date before) {
-        return 0;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(log -> log.getUser().equalsIgnoreCase(user))
+                .map(LogEntry::getEvent)
+                .collect(Collectors.toSet()).size();
     }
 
     public Set<String> getUsersForIP(String ip, Date after, Date before) {
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(logEntry -> logEntry.getIp().equalsIgnoreCase(ip))
+                .map(LogEntry::getUser)
+                .collect(Collectors.toSet());
     }
 
     public Set<String> getLoggedUsers(Date after, Date before) {
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(logEntry -> logEntry.getEvent().equals(Event.LOGIN))
+                .map(LogEntry::getUser)
+                .collect(Collectors.toSet());
     }
 
     public Set<String> getDownloadedPluginUsers(Date after, Date before) {
