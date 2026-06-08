@@ -62,11 +62,19 @@ public class EventQueryImpl {
     }
 
     public int getNumberOfAttemptToSolveTask(int task, Date after, Date before) {
-        return 0;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(logEntry -> logEntry.getEvent().equals(Event.SOLVE_TASK)
+                        && logEntry.getTaskNumber() == task)
+                .collect(Collectors.toSet()).size();
     }
 
     public int getNumberOfSuccessfulAttemptToSolveTask(int task, Date after, Date before) {
-        return 0;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(logEntry -> logEntry.getEvent().equals(Event.DONE_TASK)
+                        && logEntry.getTaskNumber() == task)
+                .collect(Collectors.toSet()).size();
     }
 
     public Map<Integer, Integer> getAllSolvedTasksAndTheirNumber(Date after, Date before) {
