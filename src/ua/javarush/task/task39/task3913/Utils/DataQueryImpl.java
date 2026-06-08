@@ -6,6 +6,7 @@ import ua.javarush.task.task39.task3913.Event;
 import ua.javarush.task.task39.task3913.Status;
 
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,15 +43,36 @@ public class DataQueryImpl {
     }
 
     public Date getDateWhenUserLoggedFirstTime(String user, Date after, Date before) {
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(logEntry -> logEntry.getUser().equalsIgnoreCase(user)
+                        && logEntry.getEvent().equals(Event.LOGIN))
+                .map(LogEntry::getDate)
+                .min(Date::compareTo)
+                .orElse(null);
+
     }
 
     public Date getDateWhenUserSolvedTask(String user, int task, Date after, Date before) {
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(logEntry -> logEntry.getUser().equalsIgnoreCase(user)
+                        && logEntry.getEvent().equals(Event.SOLVE_TASK)
+                        && logEntry.getTaskNumber()==task)
+                .map(LogEntry::getDate)
+                .min(Date::compareTo)
+                .orElse(null);
     }
 
     public Date getDateWhenUserDoneTask(String user, int task, Date after, Date before) {
-        return null;
+        return logReader.getLogs().stream()
+                .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
+                .filter(logEntry -> logEntry.getUser().equalsIgnoreCase(user)
+                        && logEntry.getEvent().equals(Event.DONE_TASK)
+                        && logEntry.getTaskNumber()==task)
+                .map(LogEntry::getDate)
+                .min(Date::compareTo)
+                .orElse(null);
     }
 
     public Set<Date> getDatesWhenUserWroteMessage(String user, Date after, Date before) {
