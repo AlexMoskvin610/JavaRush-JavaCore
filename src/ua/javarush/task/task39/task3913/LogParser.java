@@ -28,7 +28,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         this.userQuery = new UserQueryImpl(logDir);
         this.dataQuery = new DataQueryImpl(logDir);
         this.eventQuery = new EventQueryImpl(logDir);
-        this.queryExecutor = new QLQueryExecutor();
+        this.queryExecutor = new QLQueryExecutor(this);
     }
 
     /// ////////////////////////IPQuery////////////////////////////////////////////////////////////////
@@ -114,6 +114,10 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
     }
 
     /// /////////////DataQuery/////////////////////////////////////////////////////////////////
+    public Set<Date> getAllUniqDates() {
+        return dataQuery.getAllUniqueDates();
+    }
+
     @Override
     public Set<Date> getDatesForUserAndEvent(String user, Event event, Date after, Date before) {
         return dataQuery.getDatesForUserAndEvent(user, event, after, before);
@@ -203,6 +207,11 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
     @Override
     public Map<Integer, Integer> getAllDoneTasksAndTheirNumber(Date after, Date before) {
         return eventQuery.getAllDoneTasksAndTheirNumber(after, before);
+    }
+
+    ///////StatusQuery////////////////////////////////////////////////////////////////
+    public Set<Status> getAllUniqStatuses() {
+        return eventQuery.getAllUniqStatuses();
     }
 
     /// ////////////QueryExecutor///////////////////////////////////////////////////////////

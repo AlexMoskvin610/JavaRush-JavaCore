@@ -32,7 +32,7 @@ public class QLQueryReader {
         }
     }
 
-    private QueryEntry parseQuery(String line) {
+    public QueryEntry parseQuery(String line) {
         Matcher matched = PATTERN.matcher(line);
 
         if (!matched.matches()) {
