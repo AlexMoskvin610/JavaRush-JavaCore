@@ -1,7 +1,5 @@
 package ua.javarush.task.task39.task3913;
 
-import ua.javarush.task.task39.task3913.Utils.QLQ.QLQueryReader;
-
 import java.nio.file.Paths;
 
 public class Solution {
@@ -12,8 +10,7 @@ public class Solution {
     public static void main(String[] args) {
         LogParser logParser = new LogParser(Paths.get(LOG_FILE_PATH));
 
-       // logParser.execute(GET_IP).forEach(System.out::println);
+        // logParser.execute(GET_IP).forEach(System.out::println);
         logParser.execute(GET_STATUS).forEach(System.out::println);
-
     }
 }
