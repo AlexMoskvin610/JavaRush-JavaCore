@@ -95,6 +95,12 @@ public class EventQueryImpl {
                         Collectors.summingInt(log -> 1)));
     }
 
+    public Set<Status> getAllUniqStatuses() {
+        return logReader.getLogs().stream()
+                .map(LogEntry::getStatus)
+                .collect(Collectors.toSet());
+    }
+
     private boolean isDateInRange(Date date, Date after, Date before) {
         if (after != null && date.getTime() < after.getTime()) return false;
         if (before != null && date.getTime() > before.getTime()) return false;
