@@ -1,6 +1,8 @@
 package ua.javarush.task.task39.task3913.Utils.QLQ;
 
+import ua.javarush.task.task39.task3913.Event;
 import ua.javarush.task.task39.task3913.LogParser;
+import ua.javarush.task.task39.task3913.Status;
 import ua.javarush.task.task39.task3913.Utils.common.DateFormatter;
 
 import java.util.HashSet;
@@ -20,9 +22,9 @@ public class IPExecutorHelper {
             case "date":
                 return new HashSet<>(logParser.getIPsByDate(DateFormatter.parseDate(value)));
             case "event":
-                return new HashSet<>();
+                return new HashSet<>(logParser.getIPsForEvent(Event.valueOf(value.toUpperCase()), null, null));
             case "status":
-                return new HashSet<>();
+                return new HashSet<>(logParser.getIPsForStatus(Status.valueOf(value.toUpperCase()), null, null));
             default:
                 throw new IllegalArgumentException("Unsupported filter: " + filter2);
         }
