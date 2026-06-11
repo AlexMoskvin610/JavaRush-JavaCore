@@ -3,28 +3,28 @@ package ua.javarush.task.task39.task3913;
 import ua.javarush.task.task39.task3913.Utils.DataQueryImpl;
 import ua.javarush.task.task39.task3913.Utils.EventQueryImpl;
 import ua.javarush.task.task39.task3913.Utils.IPQueryImpl;
+import ua.javarush.task.task39.task3913.Utils.QLQ.QLQueryExecutor;
 import ua.javarush.task.task39.task3913.Utils.UserQueryImpl;
-import ua.javarush.task.task39.task3913.query.DateQuery;
-import ua.javarush.task.task39.task3913.query.EventQuery;
-import ua.javarush.task.task39.task3913.query.IPQuery;
-import ua.javarush.task.task39.task3913.query.UserQuery;
+import ua.javarush.task.task39.task3913.query.*;
 
 import java.nio.file.Path;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
-public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery {
+public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQuery {
     private final IPQueryImpl ipQuery;
     private final UserQueryImpl userQuery;
     private final DataQueryImpl dataQuery;
     private final EventQueryImpl eventQuery;
+    private final QLQueryExecutor queryExecutor;
 
     public LogParser(Path logDir) {
         this.ipQuery = new IPQueryImpl(logDir);
         this.userQuery = new UserQueryImpl(logDir);
         this.dataQuery = new DataQueryImpl(logDir);
         this.eventQuery = new EventQueryImpl(logDir);
+        this.queryExecutor = new QLQueryExecutor(this);
     }
 
     /// ////////////////////////IPQuery////////////////////////////////////////////////////////////////
@@ -110,6 +110,10 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery {
     }
 
     /// /////////////DataQuery/////////////////////////////////////////////////////////////////
+    public Set<Date> getAllUniqDates() {
+        return dataQuery.getAllUniqueDates();
+    }
+
     @Override
     public Set<Date> getDatesForUserAndEvent(String user, Event event, Date after, Date before) {
         return dataQuery.getDatesForUserAndEvent(user, event, after, before);
@@ -199,5 +203,16 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery {
     @Override
     public Map<Integer, Integer> getAllDoneTasksAndTheirNumber(Date after, Date before) {
         return eventQuery.getAllDoneTasksAndTheirNumber(after, before);
+    }
+
+    /// ////StatusQuery////////////////////////////////////////////////////////////////
+    public Set<Status> getAllUniqStatuses() {
+        return eventQuery.getAllUniqStatuses();
+    }
+
+    /// ////////////QueryExecutor///////////////////////////////////////////////////////////
+    @Override
+    public Set<Object> execute(String query) {
+        return queryExecutor.execute(query);
     }
 }

@@ -17,6 +17,12 @@ public class DataQueryImpl {
         this.logReader = new LogReader(logDir);
     }
 
+    public Set<Date> getAllUniqueDates() {
+        return logReader.getLogs().stream()
+                .map(LogEntry::getDate)
+                .collect(Collectors.toSet());
+    }
+
     public Set<Date> getDatesForUserAndEvent(String user, Event event, Date after, Date before) {
         return logReader.getLogs().stream()
                 .filter(logEntry -> isDateInRange(logEntry.getDate(), after, before))
