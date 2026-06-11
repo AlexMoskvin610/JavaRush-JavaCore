@@ -63,7 +63,7 @@ public class QLQueryExecutor {
 
     //GET IP FOR USER vasya
     private Set<Object> handleType2(QueryEntry queryEntry) {
-       // System.out.println(queryEntry);
+
         String filter = queryEntry.getQueryFilter().name();
         String filter2 = queryEntry.getQueryFilter2().name();
         String filter2Value = queryEntry.getFilter2Value();
