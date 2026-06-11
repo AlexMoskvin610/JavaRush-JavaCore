@@ -101,6 +101,12 @@ public class UserQueryImpl {
                 .collect(Collectors.toSet());
     }
 
+    public Set<String> getUsersByEvent(String value) {
+        return logReader.getLogs().stream()
+                .filter(logEntry -> logEntry.getEvent().name().equalsIgnoreCase(value))
+                .map(LogEntry::getUser)
+                .collect(Collectors.toSet());
+    }
     private boolean isDateInRange(Date date, Date after, Date before) {
         if (after != null && date.getTime() < after.getTime()) return false;
         if (before != null && date.getTime() > before.getTime()) return false;

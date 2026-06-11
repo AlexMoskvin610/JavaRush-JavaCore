@@ -1,16 +1,15 @@
 package ua.javarush.task.task39.task3913;
 
-import ua.javarush.task.task39.task3913.Utils.QLQ.QLQueryReader;
+import java.nio.file.Paths;
 
 public class Solution {
     private static final String LOG_FILE_PATH = "src/ua/javarush/task/task39/task3913/logs/";
+    private static final String TYPE2_QUERY = "get ip for user = \"Vasya\"";
 
     public static void main(String[] args) {
-        // LogParser logParser = new LogParser(Paths.get(LOG_FILE_PATH));
+        LogParser logParser = new LogParser(Paths.get(LOG_FILE_PATH));
 
-        QLQueryReader reader = new QLQueryReader();
-
-        System.out.println(reader.readQuery());
+        logParser.execute(TYPE2_QUERY);
 
     }
 }

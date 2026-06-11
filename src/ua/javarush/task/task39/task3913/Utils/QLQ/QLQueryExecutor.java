@@ -4,15 +4,18 @@ import ua.javarush.task.task39.task3913.DTO.QueryEntry;
 import ua.javarush.task.task39.task3913.LogParser;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 public class QLQueryExecutor {
     private final QLQueryReader reader;
     private final LogParser logParser;
+    private final UserExecutorHelper userHelper;
 
     public QLQueryExecutor(LogParser logParser) {
         this.logParser = logParser;
         this.reader = new QLQueryReader();
+        this.userHelper = new UserExecutorHelper(logParser);
     }
 
     public Set<Object> execute(String query) {
@@ -31,30 +34,41 @@ public class QLQueryExecutor {
     // 5.1.3. get date
     // 5.1.4. get event
     // 5.1.5. get status
+    //1) get ip for user = "Vasya"
+    // 2) get user for event = "DONE_TASK"
+    // 3) get event for date = "03.01.2014 03:45:23"
     private Set<Object> handleType1(QueryEntry queryEntry) {
         String filter = queryEntry.getQueryFilter().name();
 
         switch (filter.toLowerCase()) {
             case "ip":
-                return Collections.singleton(logParser.getUniqueIPs(null, null));
+                return new HashSet<>(logParser.getUniqueIPs(null, null));
             case "user":
-                return Collections.singleton(logParser.getAllUsers());
+                return new HashSet<>(logParser.getAllUsers());
             case "date", "status":
                 return null;
             case "event":
-                return Collections.singleton(logParser.getAllEvents(null, null));
+                return new HashSet<>(logParser.getAllEvents(null, null));
             default:
                 throw new IllegalArgumentException("Unsupported filter: " + filter);
         }
     }
 
+    //GET IP FOR USER vasya
     private Set<Object> handleType2(QueryEntry queryEntry) {
-        return null;
+        String filter = queryEntry.getQueryFilter().name();
+        String filter2 = queryEntry.getQueryFilter2().name();
+        String filter2Value = queryEntry.getFilter2Value();
+
+        switch (filter.toLowerCase()) {
+            case "user" :
+                return userHelper.executeQuery(filter2, filter2Value);
+            default:
+                throw new IllegalArgumentException("Unsupported filter: " + filter);
+        }
     }
 
     private Set<Object> handleType3(QueryEntry queryEntry) {
         return null;
     }
-
-
 }

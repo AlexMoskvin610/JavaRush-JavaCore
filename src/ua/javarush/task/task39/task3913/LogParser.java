@@ -78,6 +78,10 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         return userQuery.getUsersForIP(ip, after, before);
     }
 
+    public Set<String> getUsersForEvent(String value) {
+        return userQuery.getUsersByEvent(value);
+    }
+
     @Override
     public Set<String> getLoggedUsers(Date after, Date before) {
         return userQuery.getLoggedUsers(after, before);
@@ -100,7 +104,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
 
     @Override
     public Set<String> getSolvedTaskUsers(Date after, Date before, int task) {
-        return userQuery.getSolvedTaskUsers(after, before, task);
+        return null;
     }
 
     @Override
@@ -110,7 +114,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
 
     @Override
     public Set<String> getDoneTaskUsers(Date after, Date before, int task) {
-        return userQuery.getDoneTaskUsers(after, before, task);
+        return null;
     }
 
     /// /////////////DataQuery/////////////////////////////////////////////////////////////////

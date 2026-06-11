@@ -13,10 +13,19 @@ public class QueryEntry {
     private QueryType queryType;
     private QueryFilter queryFilter;
     private QueryFilter queryFilter2;
+    private String filter2Value;
     private String startDate;
     private String endDate;
 
     public QueryEntry() {
+    }
+
+    public String getFilter2Value() {
+        return filter2Value;
+    }
+
+    public void setFilter2Value(String filter2Value) {
+        this.filter2Value = filter2Value;
     }
 
     public int getType() {
@@ -71,12 +80,13 @@ public class QueryEntry {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         QueryEntry that = (QueryEntry) o;
-        return type == that.type && queryType == that.queryType && queryFilter == that.queryFilter && queryFilter2 == that.queryFilter2 && Objects.equals(startDate, that.startDate) && Objects.equals(endDate, that.endDate);
+        return type == that.type && queryType == that.queryType && queryFilter == that.queryFilter
+                && queryFilter2 == that.queryFilter2 && filter2Value.equals(that.filter2Value) && Objects.equals(startDate, that.startDate) && Objects.equals(endDate, that.endDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, queryType, queryFilter, queryFilter2, startDate, endDate);
+        return Objects.hash(type, queryType, queryFilter, queryFilter2, filter2Value, startDate, endDate);
     }
 
     @Override
@@ -87,6 +97,7 @@ public class QueryEntry {
         sb.append(queryType.name().toUpperCase());
         sb.append(" ").append(queryFilter.name());
         sb.append(queryFilter2 != null ? " FOR " + queryFilter2.name() : "");
+        sb.append(filter2Value != null ? " " + filter2Value : "");
         sb.append(startDate == null || startDate.isEmpty() ? "}" : "AND DATE BETWEEN ");
         sb.append(endDate == null || endDate.isEmpty() ? "" : startDate + " AND " + endDate + "}");
 

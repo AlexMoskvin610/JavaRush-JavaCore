@@ -6,6 +6,7 @@ import ua.javarush.task.task39.task3913.DTO.enums.QueryType;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,9 +68,19 @@ public class QLQueryReader {
         queryEntry.setQueryFilter(QueryFilter.fromString(queryParts[1]));
     }
 
+    //field2 = "value1"
     private static void parsePart2(String part, QueryEntry queryEntry) {
+        String[] query = part.trim().split("\\s+");
+
+        queryEntry.setType(2);
+        queryEntry.setQueryFilter2(QueryFilter.fromString(query[0]));
+        queryEntry.setFilter2Value(cleanString(query[2]));
     }
 
     private static void parsePart3(String part, QueryEntry queryEntry) {
+    }
+
+    private static String cleanString(String string) {
+        return string.trim().toLowerCase(Locale.ROOT).replaceAll("^[\"']+|[\"']$", "");
     }
 }
