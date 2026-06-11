@@ -105,6 +105,27 @@ public class DataQueryImpl {
                 .collect(Collectors.toSet());
     }
 
+    public Set<Date> getDatesByUser(String user) {
+        return logReader.getLogs().stream()
+                .filter(logEntry -> logEntry.getUser().equalsIgnoreCase(user))
+                .map(LogEntry::getDate)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Date> getDatesByEvent(String event) {
+        return logReader.getLogs().stream()
+                .filter(logEntry -> logEntry.getEvent().name().equalsIgnoreCase(event))
+                .map(LogEntry::getDate)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Date> getDatesByStatus(String status) {
+        return logReader.getLogs().stream()
+                .filter(logEntry -> logEntry.getStatus().name().equalsIgnoreCase(status))
+                .map(LogEntry::getDate)
+                .collect(Collectors.toSet());
+    }
+
     private boolean isDateInRange(Date date, Date after, Date before) {
         if (after != null && date.getTime() < after.getTime()) return false;
         if (before != null && date.getTime() > before.getTime()) return false;

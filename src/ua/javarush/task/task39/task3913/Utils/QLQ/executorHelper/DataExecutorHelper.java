@@ -17,11 +17,11 @@ public class DataExecutorHelper {
             case "ip":
                 return new HashSet<>(logParser.getDatesByIP(value));
             case "user":
-                return new HashSet<>();
+                return new HashSet<>(logParser.getDatesByUser(value));
             case "event":
-                return new HashSet<>();
+                return new HashSet<>(logParser.getDatesByEvent(value));
             case "status":
-                return new HashSet<>();
+                return new HashSet<>(logParser.getDatesByStatus(value));
             default:
                 throw new IllegalArgumentException("Unsupported filter: " + filter2);
         }
