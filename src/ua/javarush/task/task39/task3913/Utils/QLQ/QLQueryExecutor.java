@@ -2,6 +2,7 @@ package ua.javarush.task.task39.task3913.Utils.QLQ;
 
 import ua.javarush.task.task39.task3913.DTO.QueryEntry;
 import ua.javarush.task.task39.task3913.LogParser;
+import ua.javarush.task.task39.task3913.Utils.QLQ.executorHelper.DataExecutorHelper;
 import ua.javarush.task.task39.task3913.Utils.QLQ.executorHelper.IPExecutorHelper;
 import ua.javarush.task.task39.task3913.Utils.QLQ.executorHelper.UserExecutorHelper;
 
@@ -13,12 +14,14 @@ public class QLQueryExecutor {
     private final LogParser logParser;
     private final UserExecutorHelper userHelper;
     private final IPExecutorHelper ipHelper;
+    private final DataExecutorHelper dataHelper;
 
     public QLQueryExecutor(LogParser logParser) {
         this.logParser = logParser;
         this.reader = new QLQueryReader();
         this.userHelper = new UserExecutorHelper(logParser);
         this.ipHelper = new IPExecutorHelper(logParser);
+        this.dataHelper = new DataExecutorHelper(logParser);
     }
 
     public Set<Object> execute(String query) {
@@ -75,6 +78,8 @@ public class QLQueryExecutor {
                 return userHelper.executeQuery(filter2, filter2Value);
             case "ip" :
                 return ipHelper.executeQuery(filter2, filter2Value);
+            case "date" :
+                return dataHelper.executeQuery(filter2, filter2Value);
             default:
                 throw new IllegalArgumentException("Unsupported filter: " + filter);
         }
