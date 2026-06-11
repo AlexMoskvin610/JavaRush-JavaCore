@@ -212,6 +212,11 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         return eventQuery.getAllDoneTasksAndTheirNumber(after, before);
     }
 
+    /// ///////////StatusQuery///////////////////////////////////////////////////////////////
+
+    public Set<Status> getAllUniqueStatuses() {
+        return Set.of();
+    }
     /// ////////////QueryExecutor///////////////////////////////////////////////////////////
     @Override
     public Set<Object> execute(String query) {

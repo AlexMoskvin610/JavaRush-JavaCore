@@ -51,7 +51,7 @@ public class QLQueryExecutor {
             case "date":
                 return new HashSet<>(logParser.getAllUniqueDates());
             case "status":
-                return new HashSet<>(logParser.getAllUniqStatuses());
+                return new HashSet<>(logParser.getAllUniqueStatuses());
             case "event":
                 return new HashSet<>(logParser.getAllEvents(null, null));
             default:
