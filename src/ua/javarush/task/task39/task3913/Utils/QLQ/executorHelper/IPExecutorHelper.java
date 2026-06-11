@@ -1,4 +1,4 @@
-package ua.javarush.task.task39.task3913.Utils.QLQ;
+package ua.javarush.task.task39.task3913.Utils.QLQ.executorHelper;
 
 import ua.javarush.task.task39.task3913.Event;
 import ua.javarush.task.task39.task3913.LogParser;

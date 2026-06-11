@@ -2,6 +2,8 @@ package ua.javarush.task.task39.task3913.Utils.QLQ;
 
 import ua.javarush.task.task39.task3913.DTO.QueryEntry;
 import ua.javarush.task.task39.task3913.LogParser;
+import ua.javarush.task.task39.task3913.Utils.QLQ.executorHelper.IPExecutorHelper;
+import ua.javarush.task.task39.task3913.Utils.QLQ.executorHelper.UserExecutorHelper;
 
 import java.util.HashSet;
 import java.util.Set;
