@@ -31,7 +31,7 @@ public class IPQueryImpl {
     public Set<String> getIPsForUser(String user, Date after, Date before) {
         return logReader.getLogs().stream()
                 .filter(entry -> isDateInRange(entry.getDate(), after, before))
-                .filter(entry -> entry.getUser().equals(user))
+                .filter(entry -> entry.getUser().equalsIgnoreCase(user))
                 .map(LogEntry::getIp)
                 .collect(Collectors.toSet());
     }

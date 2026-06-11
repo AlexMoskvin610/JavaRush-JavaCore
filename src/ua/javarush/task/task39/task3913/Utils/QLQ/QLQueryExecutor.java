@@ -10,11 +10,13 @@ public class QLQueryExecutor {
     private final QLQueryReader reader;
     private final LogParser logParser;
     private final UserExecutorHelper userHelper;
+    private final IPExecutorHelper ipHelper;
 
     public QLQueryExecutor(LogParser logParser) {
         this.logParser = logParser;
         this.reader = new QLQueryReader();
         this.userHelper = new UserExecutorHelper(logParser);
+        this.ipHelper = new IPExecutorHelper(logParser);
     }
 
     public Set<Object> execute(String query) {
@@ -61,6 +63,7 @@ public class QLQueryExecutor {
 
     //GET IP FOR USER vasya
     private Set<Object> handleType2(QueryEntry queryEntry) {
+       // System.out.println(queryEntry);
         String filter = queryEntry.getQueryFilter().name();
         String filter2 = queryEntry.getQueryFilter2().name();
         String filter2Value = queryEntry.getFilter2Value();
@@ -68,6 +71,8 @@ public class QLQueryExecutor {
         switch (filter.toLowerCase()) {
             case "user" :
                 return userHelper.executeQuery(filter2, filter2Value);
+            case "ip" :
+                return ipHelper.executeQuery(filter2, filter2Value);
             default:
                 throw new IllegalArgumentException("Unsupported filter: " + filter);
         }

@@ -70,11 +70,11 @@ public class QLQueryReader {
 
     //field2 = "value1"
     private static void parsePart2(String part, QueryEntry queryEntry) {
-        String[] query = part.trim().split("\\s+");
+        String[] query = part.trim().split("=");
 
         queryEntry.setType(2);
-        queryEntry.setQueryFilter2(QueryFilter.fromString(query[0]));
-        queryEntry.setFilter2Value(cleanString(query[2]));
+        queryEntry.setQueryFilter2(QueryFilter.fromString(query[0].trim()));
+        queryEntry.setFilter2Value(cleanString(query[1]));
     }
 
     private static void parsePart3(String part, QueryEntry queryEntry) {
