@@ -5,7 +5,11 @@ import ua.javarush.task.task39.task3913.Utils.EventQueryImpl;
 import ua.javarush.task.task39.task3913.Utils.IPQueryImpl;
 import ua.javarush.task.task39.task3913.Utils.QLQ.QLQueryExecutor;
 import ua.javarush.task.task39.task3913.Utils.UserQueryImpl;
-import ua.javarush.task.task39.task3913.query.*;
+import ua.javarush.task.task39.task3913.query.DateQuery;
+import ua.javarush.task.task39.task3913.query.EventQuery;
+import ua.javarush.task.task39.task3913.query.IPQuery;
+import ua.javarush.task.task39.task3913.query.QLQuery;
+import ua.javarush.task.task39.task3913.query.UserQuery;
 
 import java.nio.file.Path;
 import java.util.Date;
@@ -110,10 +114,6 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
     }
 
     /// /////////////DataQuery/////////////////////////////////////////////////////////////////
-    public Set<Date> getAllUniqDates() {
-        return dataQuery.getAllUniqueDates();
-    }
-
     @Override
     public Set<Date> getDatesForUserAndEvent(String user, Event event, Date after, Date before) {
         return dataQuery.getDatesForUserAndEvent(user, event, after, before);
@@ -203,11 +203,6 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
     @Override
     public Map<Integer, Integer> getAllDoneTasksAndTheirNumber(Date after, Date before) {
         return eventQuery.getAllDoneTasksAndTheirNumber(after, before);
-    }
-
-    /// ////StatusQuery////////////////////////////////////////////////////////////////
-    public Set<Status> getAllUniqStatuses() {
-        return eventQuery.getAllUniqStatuses();
     }
 
     /// ////////////QueryExecutor///////////////////////////////////////////////////////////
