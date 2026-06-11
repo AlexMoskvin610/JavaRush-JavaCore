@@ -3,7 +3,6 @@ package ua.javarush.task.task39.task3913.Utils.QLQ;
 import ua.javarush.task.task39.task3913.DTO.QueryEntry;
 import ua.javarush.task.task39.task3913.LogParser;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,12 +20,16 @@ public class QLQueryExecutor {
     public Set<Object> execute(String query) {
         QueryEntry queryEntry = reader.parseQuery(query);
 
-        return switch (queryEntry.getType()) {
-            case 1 -> handleType1(queryEntry);
-            case 2 -> handleType2(queryEntry);
-            case 3 -> handleType3(queryEntry);
-            default -> throw new IllegalArgumentException("Unsupported query type");
-        };
+        switch (queryEntry.getType()) {
+            case 1:
+                return handleType1(queryEntry);
+            case 2:
+                return handleType2(queryEntry);
+            case 3:
+                return handleType3(queryEntry);
+            default:
+                throw new IllegalArgumentException("Unsupported query type");
+        }
     }
 
     // 5.1.1. get ip
