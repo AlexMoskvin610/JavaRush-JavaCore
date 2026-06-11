@@ -158,6 +158,9 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         return dataQuery.getDatesWhenUserDownloadedPlugin(user, after, before);
     }
 
+    public Set<Date> getAllUniqueDates() {
+        return dataQuery.getAllUniqueDates();
+    }
     /// //////////////EventQuery////////////////////////////////////////////////////////////////////
     @Override
     public int getNumberOfAllEvents(Date after, Date before) {

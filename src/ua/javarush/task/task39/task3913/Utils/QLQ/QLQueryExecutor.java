@@ -49,7 +49,7 @@ public class QLQueryExecutor {
             case "user":
                 return new HashSet<>(logParser.getAllUsers());
             case "date":
-                return new HashSet<>(logParser.getAllUniqDates());
+                return new HashSet<>(logParser.getAllUniqueDates());
             case "status":
                 return new HashSet<>(logParser.getAllUniqStatuses());
             case "event":

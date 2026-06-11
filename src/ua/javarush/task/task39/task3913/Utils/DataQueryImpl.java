@@ -92,6 +92,11 @@ public class DataQueryImpl {
                 .collect(Collectors.toSet());
     }
 
+    public Set<Date> getAllUniqueDates() {
+        return logReader.getLogs().stream()
+                .map(LogEntry::getDate)
+                .collect(Collectors.toSet());
+    }
     private boolean isDateInRange(Date date, Date after, Date before) {
         if (after != null && date.getTime() < after.getTime()) return false;
         if (before != null && date.getTime() > before.getTime()) return false;
