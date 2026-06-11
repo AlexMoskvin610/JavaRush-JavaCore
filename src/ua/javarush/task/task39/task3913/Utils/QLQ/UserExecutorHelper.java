@@ -17,11 +17,11 @@ public class UserExecutorHelper {
             case "ip":
                 return new HashSet<>(logParser.getUsersForIP(value, null, null));
             case "date":
-                return new HashSet<>();
+                return new HashSet<>(logParser.getUsersByDate(value));
             case "event":
                 return new HashSet<>(logParser.getUsersForEvent(value));
             case "status":
-                return new HashSet<>();
+                return new HashSet<>(logParser.getUsersForStatus(value));
             default:
                 throw new IllegalArgumentException("Invalid filter or value: " + filter2 + " " + value);
         }

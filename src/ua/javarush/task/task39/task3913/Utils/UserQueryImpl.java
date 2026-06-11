@@ -3,6 +3,7 @@ package ua.javarush.task.task39.task3913.Utils;
 import ua.javarush.task.task39.task3913.DAO.LogReader;
 import ua.javarush.task.task39.task3913.DTO.LogEntry;
 import ua.javarush.task.task39.task3913.Event;
+import ua.javarush.task.task39.task3913.Utils.common.DateFormatter;
 
 import java.nio.file.Path;
 import java.util.Date;
@@ -107,6 +108,21 @@ public class UserQueryImpl {
                 .map(LogEntry::getUser)
                 .collect(Collectors.toSet());
     }
+
+    public Set<String> getUsersByStatus(String status) {
+        return logReader.getLogs().stream()
+                .filter(logEntry -> logEntry.getStatus().name().equalsIgnoreCase(status))
+                .map(LogEntry::getUser)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<String> getUsersByDate(String date) {
+        return logReader.getLogs().stream()
+                .filter(logEntry -> logEntry.getDate().equals(DateFormatter.parseDate(date)))
+                .map(LogEntry::getUser)
+                .collect(Collectors.toSet());
+    }
+
     private boolean isDateInRange(Date date, Date after, Date before) {
         if (after != null && date.getTime() < after.getTime()) return false;
         if (before != null && date.getTime() > before.getTime()) return false;
