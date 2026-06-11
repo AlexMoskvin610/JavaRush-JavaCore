@@ -130,6 +130,10 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
     }
 
     /// /////////////DataQuery/////////////////////////////////////////////////////////////////
+    public Set<Date> getDatesByIP(String ip) {
+        return dataQuery.getDatesByIp(ip);
+    }
+
     @Override
     public Set<Date> getDatesForUserAndEvent(String user, Event event, Date after, Date before) {
         return dataQuery.getDatesForUserAndEvent(user, event, after, before);

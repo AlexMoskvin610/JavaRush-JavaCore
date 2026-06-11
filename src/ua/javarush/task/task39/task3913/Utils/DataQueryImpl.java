@@ -97,6 +97,14 @@ public class DataQueryImpl {
                 .map(LogEntry::getDate)
                 .collect(Collectors.toSet());
     }
+
+    public Set<Date> getDatesByIp(String ip) {
+        return logReader.getLogs().stream()
+                .filter(logEntry -> logEntry.getIp().equalsIgnoreCase(ip))
+                .map(LogEntry::getDate)
+                .collect(Collectors.toSet());
+    }
+
     private boolean isDateInRange(Date date, Date after, Date before) {
         if (after != null && date.getTime() < after.getTime()) return false;
         if (before != null && date.getTime() > before.getTime()) return false;

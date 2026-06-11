@@ -12,10 +12,10 @@ public class DataExecutorHelper {
         this.logParser = logParser;
     }
 
-    public Set<Object> executeQuery(String filter2, String filter2Value) {
+    public Set<Object> executeQuery(String filter2, String value) {
         switch (filter2.toLowerCase()) {
             case "ip":
-                return new HashSet<>();
+                return new HashSet<>(logParser.getDatesByIP(value));
             case "user":
                 return new HashSet<>();
             case "event":
