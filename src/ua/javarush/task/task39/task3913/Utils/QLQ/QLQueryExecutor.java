@@ -48,8 +48,10 @@ public class QLQueryExecutor {
                 return new HashSet<>(logParser.getUniqueIPs(null, null));
             case "user":
                 return new HashSet<>(logParser.getAllUsers());
-            case "date", "status":
-                return null;
+            case "date":
+                return new HashSet<>(logParser.getAllUniqDates());
+            case "status":
+                return new HashSet<>(logParser.getAllUniqStatuses());
             case "event":
                 return new HashSet<>(logParser.getAllEvents(null, null));
             default:
