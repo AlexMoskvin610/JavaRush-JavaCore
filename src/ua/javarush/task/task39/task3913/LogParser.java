@@ -1,7 +1,7 @@
 package ua.javarush.task.task39.task3913;
 
 import ua.javarush.task.task39.task3913.Utils.DataQueryImpl;
-import ua.javarush.task.task39.task3913.Utils.EventQueryImpl;
+import ua.javarush.task.task39.task3913.Utils.EventAndStatusQueryImpl;
 import ua.javarush.task.task39.task3913.Utils.IPQueryImpl;
 import ua.javarush.task.task39.task3913.Utils.QLQ.QLQueryExecutor;
 import ua.javarush.task.task39.task3913.Utils.UserQueryImpl;
@@ -20,14 +20,14 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
     private final IPQueryImpl ipQuery;
     private final UserQueryImpl userQuery;
     private final DataQueryImpl dataQuery;
-    private final EventQueryImpl eventQuery;
+    private final EventAndStatusQueryImpl eventQuery;
     private final QLQueryExecutor queryExecutor;
 
     public LogParser(Path logDir) {
         this.ipQuery = new IPQueryImpl(logDir);
         this.userQuery = new UserQueryImpl(logDir);
         this.dataQuery = new DataQueryImpl(logDir);
-        this.eventQuery = new EventQueryImpl(logDir);
+        this.eventQuery = new EventAndStatusQueryImpl(logDir);
         this.queryExecutor = new QLQueryExecutor(this);
     }
 
@@ -189,6 +189,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
     public Set<Date> getAllUniqueDates() {
         return dataQuery.getAllUniqueDates();
     }
+
     /// //////////////EventQuery////////////////////////////////////////////////////////////////////
     @Override
     public int getNumberOfAllEvents(Date after, Date before) {
@@ -240,6 +241,14 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         return eventQuery.getAllDoneTasksAndTheirNumber(after, before);
     }
 
+
+    public Set<Event> getEventForDate(String date) {
+        return eventQuery.getEventByDate(date);
+    }
+
+    public Set<Event> getEventForStatus(String status) {
+        return eventQuery.getEventByStatus(status);
+    }
     /// ///////////StatusQuery///////////////////////////////////////////////////////////////
 
     public Set<Status> getAllUniqueStatuses() {

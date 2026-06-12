@@ -4,6 +4,7 @@ import ua.javarush.task.task39.task3913.DAO.LogReader;
 import ua.javarush.task.task39.task3913.DTO.LogEntry;
 import ua.javarush.task.task39.task3913.Event;
 import ua.javarush.task.task39.task3913.Status;
+import ua.javarush.task.task39.task3913.Utils.common.DateFormatter;
 
 import java.nio.file.Path;
 import java.util.Date;
@@ -11,10 +12,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class EventQueryImpl {
+public class EventAndStatusQueryImpl {
     private final LogReader logReader;
 
-    public EventQueryImpl(Path logDir) {
+    public EventAndStatusQueryImpl(Path logDir) {
         this.logReader = new LogReader(logDir);
     }
 
@@ -98,6 +99,20 @@ public class EventQueryImpl {
     public Set<Status> getAllUniqStatuses() {
         return logReader.getLogs().stream()
                 .map(LogEntry::getStatus)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Event> getEventByDate(String date) {
+        return logReader.getLogs().stream()
+                .filter(logEntry -> logEntry.getDate().equals(DateFormatter.parseDate(date)))
+                .map(LogEntry::getEvent)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Event> getEventByStatus(String status) {
+        return logReader.getLogs().stream()
+                .filter(logEntry -> logEntry.getStatus().name().equalsIgnoreCase(status))
+                .map(LogEntry::getEvent)
                 .collect(Collectors.toSet());
     }
 
