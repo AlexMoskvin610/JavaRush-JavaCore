@@ -20,14 +20,14 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
     private final IPQueryImpl ipQuery;
     private final UserQueryImpl userQuery;
     private final DataQueryImpl dataQuery;
-    private final EventAndStatusQueryImpl eventQuery;
+    private final EventAndStatusQueryImpl eventAndStatusQuery;
     private final QLQueryExecutor queryExecutor;
 
     public LogParser(Path logDir) {
         this.ipQuery = new IPQueryImpl(logDir);
         this.userQuery = new UserQueryImpl(logDir);
         this.dataQuery = new DataQueryImpl(logDir);
-        this.eventQuery = new EventAndStatusQueryImpl(logDir);
+        this.eventAndStatusQuery = new EventAndStatusQueryImpl(logDir);
         this.queryExecutor = new QLQueryExecutor(this);
     }
 
@@ -193,66 +193,82 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
     /// //////////////EventQuery////////////////////////////////////////////////////////////////////
     @Override
     public int getNumberOfAllEvents(Date after, Date before) {
-        return eventQuery.getNumberOfAllEvents(after, before);
+        return eventAndStatusQuery.getNumberOfAllEvents(after, before);
     }
 
     @Override
     public Set<Event> getAllEvents(Date after, Date before) {
-        return eventQuery.getAllEvents(after, before);
+        return eventAndStatusQuery.getAllEvents(after, before);
     }
 
     @Override
     public Set<Event> getEventsForIP(String ip, Date after, Date before) {
-        return eventQuery.getEventsForIP(ip, after, before);
+        return eventAndStatusQuery.getEventsForIP(ip, after, before);
     }
 
     @Override
     public Set<Event> getEventsForUser(String user, Date after, Date before) {
-        return eventQuery.getEventsForUser(user, after, before);
+        return eventAndStatusQuery.getEventsForUser(user, after, before);
     }
 
     @Override
     public Set<Event> getFailedEvents(Date after, Date before) {
-        return eventQuery.getFailedEvents(after, before);
+        return eventAndStatusQuery.getFailedEvents(after, before);
     }
 
     @Override
     public Set<Event> getErrorEvents(Date after, Date before) {
-        return eventQuery.getErrorEvents(after, before);
+        return eventAndStatusQuery.getErrorEvents(after, before);
     }
 
     @Override
     public int getNumberOfAttemptToSolveTask(int task, Date after, Date before) {
-        return eventQuery.getNumberOfAttemptToSolveTask(task, after, before);
+        return eventAndStatusQuery.getNumberOfAttemptToSolveTask(task, after, before);
     }
 
     @Override
     public int getNumberOfSuccessfulAttemptToSolveTask(int task, Date after, Date before) {
-        return eventQuery.getNumberOfSuccessfulAttemptToSolveTask(task, after, before);
+        return eventAndStatusQuery.getNumberOfSuccessfulAttemptToSolveTask(task, after, before);
     }
 
     @Override
     public Map<Integer, Integer> getAllSolvedTasksAndTheirNumber(Date after, Date before) {
-        return eventQuery.getAllSolvedTasksAndTheirNumber(after, before);
+        return eventAndStatusQuery.getAllSolvedTasksAndTheirNumber(after, before);
     }
 
     @Override
     public Map<Integer, Integer> getAllDoneTasksAndTheirNumber(Date after, Date before) {
-        return eventQuery.getAllDoneTasksAndTheirNumber(after, before);
+        return eventAndStatusQuery.getAllDoneTasksAndTheirNumber(after, before);
     }
 
 
     public Set<Event> getEventForDate(String date) {
-        return eventQuery.getEventByDate(date);
+        return eventAndStatusQuery.getEventByDate(date);
     }
 
     public Set<Event> getEventForStatus(String status) {
-        return eventQuery.getEventByStatus(status);
+        return eventAndStatusQuery.getEventByStatus(status);
     }
-    /// ///////////StatusQuery///////////////////////////////////////////////////////////////
 
+    /// ///////////StatusQuery///////////////////////////////////////////////////////////////
     public Set<Status> getAllUniqueStatuses() {
-        return eventQuery.getAllUniqStatuses();
+        return eventAndStatusQuery.getAllUniqStatuses();
+    }
+
+    public Set<Status> getStatusForIP(String ip) {
+        return eventAndStatusQuery.getStatusByIP(ip);
+    }
+
+    public Set<Status> getStatusesForUser(String user) {
+        return eventAndStatusQuery.getStatusByUser(user);
+    }
+
+    public Set<Status> getStatusesForDate(String date) {
+        return eventAndStatusQuery.getStatusByDate(date);
+    }
+
+    public Set<Status> getStatusesForEvent(String event) {
+        return eventAndStatusQuery.getStatusByEvent(event);
     }
 
     /// ////////////QueryExecutor///////////////////////////////////////////////////////////

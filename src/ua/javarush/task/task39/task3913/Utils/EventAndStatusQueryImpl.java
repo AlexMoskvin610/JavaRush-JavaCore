@@ -116,6 +116,34 @@ public class EventAndStatusQueryImpl {
                 .collect(Collectors.toSet());
     }
 
+    public Set<Status> getStatusByIP(String ip) {
+        return logReader.getLogs().stream()
+                .filter(logEntry -> logEntry.getIp().equalsIgnoreCase(ip))
+                .map(LogEntry::getStatus)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Status> getStatusByUser(String user) {
+        return logReader.getLogs().stream()
+                .filter(logEntry -> logEntry.getUser().equalsIgnoreCase(user))
+                .map(LogEntry::getStatus)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Status> getStatusByDate(String date) {
+        return logReader.getLogs().stream()
+                .filter(logEntry -> logEntry.getDate().equals(DateFormatter.parseDate(date)))
+                .map(LogEntry::getStatus)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Status> getStatusByEvent(String event) {
+        return logReader.getLogs().stream()
+                .filter(logEntry -> logEntry.getEvent().name().equalsIgnoreCase(event))
+                .map(LogEntry::getStatus)
+                .collect(Collectors.toSet());
+    }
+
     private boolean isDateInRange(Date date, Date after, Date before) {
         if (after != null && date.getTime() < after.getTime()) return false;
         if (before != null && date.getTime() > before.getTime()) return false;
