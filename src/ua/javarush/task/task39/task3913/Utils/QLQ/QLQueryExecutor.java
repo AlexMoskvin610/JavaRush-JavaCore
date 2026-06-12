@@ -88,7 +88,7 @@ public class QLQueryExecutor {
                 return dataHelper.executeQuery(filter2, filter2Value);
             case "event" :
                 return eventHelper.executeQuery(filter2, filter2Value);
-            case "status":
+            case "status" :
                 return statusHelper.executeQuery(filter2, filter2Value);
             default:
                 throw new IllegalArgumentException("Unsupported filter: " + filter);
