@@ -1,33 +1,26 @@
 package ua.javarush.task.task39.task3913.Utils.QLQ;
 
+import ua.javarush.task.task39.task3913.DAO.LogReader;
+import ua.javarush.task.task39.task3913.DTO.LogEntry;
 import ua.javarush.task.task39.task3913.DTO.QueryEntry;
-import ua.javarush.task.task39.task3913.LogParser;
-import ua.javarush.task.task39.task3913.Utils.QLQ.executorHelper.DataExecutorHelper;
-import ua.javarush.task.task39.task3913.Utils.QLQ.executorHelper.EventExecutorHelper;
-import ua.javarush.task.task39.task3913.Utils.QLQ.executorHelper.IPExecutorHelper;
-import ua.javarush.task.task39.task3913.Utils.QLQ.executorHelper.StatusExecutorHelper;
-import ua.javarush.task.task39.task3913.Utils.QLQ.executorHelper.UserExecutorHelper;
+import ua.javarush.task.task39.task3913.DTO.enums.QueryFilter;
+import ua.javarush.task.task39.task3913.Event;
+import ua.javarush.task.task39.task3913.Status;
+import ua.javarush.task.task39.task3913.Utils.common.DateFormatter;
 
+import java.nio.file.Path;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 public class QLQueryExecutor {
     private final QLQueryReader reader;
-    private final LogParser logParser;
-    private final UserExecutorHelper userHelper;
-    private final IPExecutorHelper ipHelper;
-    private final DataExecutorHelper dataHelper;
-    private final EventExecutorHelper eventHelper;
-    private final StatusExecutorHelper statusHelper;
+    private final LogReader logReader;
 
-    public QLQueryExecutor(LogParser logParser) {
-        this.logParser = logParser;
+    public QLQueryExecutor(Path logDir) {
         this.reader = new QLQueryReader();
-        this.userHelper = new UserExecutorHelper(logParser);
-        this.ipHelper = new IPExecutorHelper(logParser);
-        this.dataHelper = new DataExecutorHelper(logParser);
-        this.eventHelper = new EventExecutorHelper(logParser);
-        this.statusHelper = new StatusExecutorHelper(logParser);
+        this.logReader = new LogReader(logDir);
     }
 
     public Set<Object> execute(String query) {
@@ -45,78 +38,101 @@ public class QLQueryExecutor {
         }
     }
 
-    // 5.1.1. get ip
-    // 5.1.2. get user
-    // 5.1.3. get date
-    // 5.1.4. get event
-    // 5.1.5. get status
-    //1) get ip for user = "Vasya"
-    // 2) get user for event = "DONE_TASK"
-    // 3) get event for date = "03.01.2014 03:45:23"
     private Set<Object> handleType1(QueryEntry queryEntry) {
-        String filter = queryEntry.getQueryFilter().name();
-
-        switch (filter.toLowerCase()) {
-            case "ip":
-                return new HashSet<>(logParser.getUniqueIPs(null, null));
-            case "user":
-                return new HashSet<>(logParser.getAllUsers());
-            case "date":
-                return new HashSet<>(logParser.getAllUniqueDates());
-            case "status":
-                return new HashSet<>(logParser.getAllUniqueStatuses());
-            case "event":
-                return new HashSet<>(logParser.getAllEvents(null, null));
-            default:
-                throw new IllegalArgumentException("Unsupported filter: " + filter);
-        }
+        return executeQuery(queryEntry.getQueryFilter(), null, null, null, null);
     }
 
-    //GET IP FOR USER vasya
     private Set<Object> handleType2(QueryEntry queryEntry) {
-        String filter = queryEntry.getQueryFilter().name();
-        String filter2 = queryEntry.getQueryFilter2().name();
-        String filter2Value = queryEntry.getFilter2Value();
+        return executeQuery(
+                queryEntry.getQueryFilter(),
+                queryEntry.getQueryFilter2(),
+                queryEntry.getFilter2Value(),
+                null,
+                null
+        );
+    }
 
-        switch (filter.toLowerCase()) {
-            case "user":
-                return userHelper.executeQuery(filter2, filter2Value);
+    private Set<Object> handleType3(QueryEntry queryEntry) {
+        return executeQuery(
+                queryEntry.getQueryFilter(),
+                queryEntry.getQueryFilter2(),
+                queryEntry.getFilter2Value(),
+                DateFormatter.parseDate(queryEntry.getStartDate()),
+                DateFormatter.parseDate(queryEntry.getEndDate())
+        );
+    }
+
+    private Set<Object> executeQuery(QueryFilter resultField, QueryFilter filterField, String filterValue,
+                                     Date after, Date before) {
+        Set<Object> result = new HashSet<>();
+
+        for (LogEntry logEntry : logReader.getLogs()) {
+            if (!isDateInRange(logEntry.getDate(), after, before)) {
+                continue;
+            }
+            if (filterField != null && !matches(logEntry, filterField, filterValue)) {
+                continue;
+            }
+
+            result.add(getFieldValue(logEntry, resultField));
+        }
+
+        return result;
+    }
+
+    private boolean matches(LogEntry logEntry, QueryFilter filterField, String filterValue) {
+        switch (filterField.name().toLowerCase(Locale.ROOT)) {
             case "ip":
-                return ipHelper.executeQuery(filter2, filter2Value);
+                return logEntry.getIp().equalsIgnoreCase(filterValue);
+            case "user":
+                return logEntry.getUser().equalsIgnoreCase(filterValue);
             case "date":
-                return dataHelper.executeQuery(filter2, filter2Value);
+                return logEntry.getDate().equals(DateFormatter.parseDate(filterValue));
             case "event":
-                return eventHelper.executeQuery(filter2, filter2Value);
+                return matchesEvent(logEntry, filterValue);
             case "status":
-                return statusHelper.executeQuery(filter2, filter2Value);
+                return logEntry.getStatus() == Status.valueOf(filterValue.toUpperCase(Locale.ROOT));
+            case "task_number":
+                return logEntry.getTaskNumber() == Integer.parseInt(filterValue);
             default:
-                throw new IllegalArgumentException("Unsupported filter: " + filter);
+                throw new IllegalArgumentException("Unsupported filter: " + filterField);
         }
     }
 
-    //get ip for user = "Eduard Petrovich Morozko" and date between "11.12.2013 0:00:00" and "03.01.2014 23:59:59"
-    private Set<Object> handleType3(QueryEntry queryEntry) {
-        String filter = queryEntry.getQueryFilter().name();
-        String filter2 = queryEntry.getQueryFilter2().name();
-        String filter2Value = queryEntry.getFilter2Value();
-        String after = queryEntry.getStartDate();
-        String before = queryEntry.getEndDate();
+    private boolean matchesEvent(LogEntry logEntry, String filterValue) {
+        String[] eventParts = filterValue.toUpperCase(Locale.ROOT).split("\\s+");
+        Event event = Event.valueOf(eventParts[0]);
 
-      //  System.out.println(filter + " for " + filter2 + " = \"" + filter2Value + "\" and date between \"" + after + "\" and \"" + before + "\"");
-
-        switch (filter.toLowerCase()) {
-            case "user":
-                return userHelper.executeQueryWithDate(filter2, filter2Value, after, before);
-            case "ip":
-                return ipHelper.executeQueryWithDate(filter2, filter2Value, after, before);
-//            case "date" :
-//                return dataHelper.executeQueryWithDate(filter2, filter2Value, after, before);
-//            case "event" :
-//                return eventHelper.executeQueryWithDate(filter2, filter2Value, after, before);
-//            case "status" :
-//                return statusHelper.executeQueryWithDate(filter2, filter2Value, after, before);
-            default:
-                throw new IllegalArgumentException("Unsupported filter: " + filter);
+        if (logEntry.getEvent() != event) {
+            return false;
         }
+
+        return eventParts.length == 1 || logEntry.getTaskNumber() == Integer.parseInt(eventParts[1]);
+    }
+
+    private Object getFieldValue(LogEntry logEntry, QueryFilter resultField) {
+        switch (resultField.name().toLowerCase(Locale.ROOT)) {
+            case "ip":
+                return logEntry.getIp();
+            case "user":
+                return logEntry.getUser();
+            case "date":
+                return logEntry.getDate();
+            case "event":
+                return logEntry.getEvent();
+            case "status":
+                return logEntry.getStatus();
+            case "task_number":
+                return logEntry.getTaskNumber();
+            default:
+                throw new IllegalArgumentException("Unsupported filter: " + resultField);
+        }
+    }
+
+    private boolean isDateInRange(Date date, Date after, Date before) {
+        if (after != null && !date.after(after)) return false;
+        if (before != null && !date.before(before)) return false;
+
+        return true;
     }
 }

@@ -24,7 +24,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         this.userQuery = new UserQueryImpl(logDir);
         this.dataQuery = new DataQueryImpl(logDir);
         this.eventAndStatusQuery = new EventAndStatusQueryImpl(logDir);
-        this.queryExecutor = new QLQueryExecutor(this);
+        this.queryExecutor = new QLQueryExecutor(logDir);
     }
 
     /// ////////////////////////IPQuery////////////////////////////////////////////////////////////////
