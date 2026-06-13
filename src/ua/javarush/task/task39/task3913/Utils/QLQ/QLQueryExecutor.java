@@ -89,7 +89,7 @@ public class QLQueryExecutor {
             case "date":
                 return logEntry.getDate().equals(DateFormatter.parseDate(filterValue));
             case "event":
-                return logEntry.getEvent() == Event.valueOf(filterValue.toUpperCase(Locale.ROOT));
+                return matchesEvent(logEntry, filterValue);
             case "status":
                 return logEntry.getStatus() == Status.valueOf(filterValue.toUpperCase(Locale.ROOT));
             case "task_number":
@@ -97,6 +97,17 @@ public class QLQueryExecutor {
             default:
                 throw new IllegalArgumentException("Unsupported filter: " + filterField);
         }
+    }
+
+    private boolean matchesEvent(LogEntry logEntry, String filterValue) {
+        String[] eventParts = filterValue.toUpperCase(Locale.ROOT).split("\\s+");
+        Event event = Event.valueOf(eventParts[0]);
+
+        if (logEntry.getEvent() != event) {
+            return false;
+        }
+
+        return eventParts.length == 1 || logEntry.getTaskNumber() == Integer.parseInt(eventParts[1]);
     }
 
     private Object getFieldValue(LogEntry logEntry, QueryFilter resultField) {
@@ -119,8 +130,8 @@ public class QLQueryExecutor {
     }
 
     private boolean isDateInRange(Date date, Date after, Date before) {
-        if (after != null && date.getTime() < after.getTime()) return false;
-        if (before != null && date.getTime() > before.getTime()) return false;
+        if (after != null && !date.after(after)) return false;
+        if (before != null && !date.before(before)) return false;
 
         return true;
     }
