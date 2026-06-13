@@ -5,11 +5,7 @@ import ua.javarush.task.task39.task3913.Utils.EventAndStatusQueryImpl;
 import ua.javarush.task.task39.task3913.Utils.IPQueryImpl;
 import ua.javarush.task.task39.task3913.Utils.QLQ.QLQueryExecutor;
 import ua.javarush.task.task39.task3913.Utils.UserQueryImpl;
-import ua.javarush.task.task39.task3913.query.DateQuery;
-import ua.javarush.task.task39.task3913.query.EventQuery;
-import ua.javarush.task.task39.task3913.query.IPQuery;
-import ua.javarush.task.task39.task3913.query.QLQuery;
-import ua.javarush.task.task39.task3913.query.UserQuery;
+import ua.javarush.task.task39.task3913.query.*;
 
 import java.nio.file.Path;
 import java.util.Date;
@@ -57,8 +53,8 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         return ipQuery.getIPsForStatus(status, after, before);
     }
 
-    public Set<String> getIPsByDate(Date date) {
-        return ipQuery.getIPsByDate(date);
+    public Set<String> getIPsByDate(Date date, Date after, Date before) {
+        return ipQuery.getIPsByDate(date, after, before);
     }
 
     /// ////////////////////////////////UserQuery/////////////////////////////////////////////////////////////

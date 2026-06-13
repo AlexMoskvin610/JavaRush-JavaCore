@@ -21,7 +21,7 @@ public class IPExecutorHelper {
             case "user":
                 return new HashSet<>(logParser.getIPsForUser(value, null, null));
             case "date":
-                return new HashSet<>(logParser.getIPsByDate(DateFormatter.parseDate(value)));
+                return new HashSet<>(logParser.getIPsByDate(DateFormatter.parseDate(value), null, null));
             case "event":
                 return new HashSet<>(logParser.getIPsForEvent(Event.valueOf(value.toUpperCase()), null, null));
             case "status":
@@ -39,7 +39,7 @@ public class IPExecutorHelper {
             case "user":
                 return new HashSet<>(logParser.getIPsForUser(value, afterDate, beforeDate));
             case "date":
-                return new HashSet<>(logParser.getUsersByDate(value));
+                return new HashSet<>(logParser.getIPsByDate(DateFormatter.parseDate(value), afterDate, beforeDate));
             case "event":
                 return new HashSet<>(logParser.getUsersForEvent(value));
             case "status":

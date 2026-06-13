@@ -52,8 +52,9 @@ public class IPQueryImpl {
                 .collect(Collectors.toSet());
     }
 
-    public Set<String> getIPsByDate(Date date) {
+    public Set<String> getIPsByDate(Date date, Date after, Date before) {
         return logReader.getLogs().stream()
+                .filter(entry -> isDateInRange(entry.getDate(), after, before))
                 .filter(logEntry -> logEntry.getDate().equals(date))
                 .map(LogEntry::getIp)
                 .collect(Collectors.toSet());
