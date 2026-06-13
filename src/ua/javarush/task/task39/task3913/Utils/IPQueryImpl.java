@@ -39,7 +39,7 @@ public class IPQueryImpl {
     public Set<String> getIPsForEvent(Event event, Date after, Date before) {
         return logReader.getLogs().stream()
                 .filter(entry -> isDateInRange(entry.getDate(), after, before))
-                .filter(entry -> entry.getEvent() == event)
+                .filter(entry -> entry.getEvent().equals(event))
                 .map(LogEntry::getIp)
                 .collect(Collectors.toSet());
     }
@@ -47,7 +47,7 @@ public class IPQueryImpl {
     public Set<String> getIPsForStatus(Status status, Date after, Date before) {
         return logReader.getLogs().stream()
                 .filter(entry -> isDateInRange(entry.getDate(), after, before))
-                .filter(entry -> entry.getStatus() == status)
+                .filter(entry -> entry.getStatus().equals(status))
                 .map(LogEntry::getIp)
                 .collect(Collectors.toSet());
     }

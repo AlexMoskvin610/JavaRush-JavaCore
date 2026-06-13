@@ -94,6 +94,8 @@ public class QueryEntry {
         StringBuilder sb = new StringBuilder();
 
         sb.append("QueryEntry{");
+        sb.append("type=").append(type);
+        sb.append(" ");
         sb.append(queryType.name().toUpperCase());
         sb.append(" ").append(queryFilter.name());
         sb.append(queryFilter2 != null ? " FOR " + queryFilter2.name() : "");

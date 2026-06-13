@@ -41,9 +41,9 @@ public class IPExecutorHelper {
             case "date":
                 return new HashSet<>(logParser.getIPsByDate(DateFormatter.parseDate(value), afterDate, beforeDate));
             case "event":
-                return new HashSet<>(logParser.getUsersForEvent(value));
+                return new HashSet<>(logParser.getIPsForEvent(Event.valueOf(value.toUpperCase()), afterDate, beforeDate));
             case "status":
-                return new HashSet<>(logParser.getUsersForStatus(value));
+                return new HashSet<>(logParser.getIPsForStatus(Status.valueOf(value.toUpperCase()), afterDate, beforeDate));
             default:
                 throw new IllegalArgumentException("Invalid filter or value: " + filter2 + " - " + value);
         }

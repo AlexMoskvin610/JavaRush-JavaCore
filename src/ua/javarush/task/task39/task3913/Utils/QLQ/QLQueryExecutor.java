@@ -102,6 +102,8 @@ public class QLQueryExecutor {
         String after = queryEntry.getStartDate();
         String before = queryEntry.getEndDate();
 
+      //  System.out.println(filter + " for " + filter2 + " = \"" + filter2Value + "\" and date between \"" + after + "\" and \"" + before + "\"");
+
         switch (filter.toLowerCase()) {
             case "user":
                 return userHelper.executeQueryWithDate(filter2, filter2Value, after, before);
