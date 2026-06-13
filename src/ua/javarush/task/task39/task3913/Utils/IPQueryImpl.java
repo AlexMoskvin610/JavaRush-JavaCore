@@ -39,7 +39,7 @@ public class IPQueryImpl {
     public Set<String> getIPsForEvent(Event event, Date after, Date before) {
         return logReader.getLogs().stream()
                 .filter(entry -> isDateInRange(entry.getDate(), after, before))
-                .filter(entry -> entry.getEvent() == event)
+                .filter(entry -> entry.getEvent().equals(event))
                 .map(LogEntry::getIp)
                 .collect(Collectors.toSet());
     }
@@ -47,21 +47,22 @@ public class IPQueryImpl {
     public Set<String> getIPsForStatus(Status status, Date after, Date before) {
         return logReader.getLogs().stream()
                 .filter(entry -> isDateInRange(entry.getDate(), after, before))
-                .filter(entry -> entry.getStatus() == status)
+                .filter(entry -> entry.getStatus().equals(status))
                 .map(LogEntry::getIp)
                 .collect(Collectors.toSet());
     }
 
-    public Set<String> getIPsByDate(Date date) {
+    public Set<String> getIPsByDate(Date date, Date after, Date before) {
         return logReader.getLogs().stream()
+                .filter(entry -> isDateInRange(entry.getDate(), after, before))
                 .filter(logEntry -> logEntry.getDate().equals(date))
                 .map(LogEntry::getIp)
                 .collect(Collectors.toSet());
     }
 
     private boolean isDateInRange(Date date, Date after, Date before) {
-        if (after != null && date.getTime() < after.getTime()) return false;
-        if (before != null && date.getTime() > before.getTime()) return false;
+        if (after != null && !date.after(after)) return false;
+        if (before != null && !date.before(before)) return false;
 
         return true;
     }
