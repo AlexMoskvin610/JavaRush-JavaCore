@@ -11,44 +11,35 @@ public class Solution {
         try {
             connection = new ConnectionMock();
             connection.connect();
-        } catch (WrongDataException e) {
+        } catch (WrongDataException | ConnectionException e) {
             throw new SolutionException("WrongDataException: " + e.getMessage());
-        } catch (ConnectionException e) {
-            throw new SolutionException("ConnectionException: " + e.getMessage());
         }
     }
 
     public void write(Object data) throws SolutionException {
         try {
             connection.write(data);
-        } catch (WrongDataException e) {
+        } catch (WrongDataException | ConnectionException e) {
             throw new SolutionException("WrongDataException: " + e.getMessage());
-        } catch (ConnectionException e) {
-            throw new SolutionException("ConnectionException: " + e.getMessage());
         }
     }
 
     public Object read() throws SolutionException {
         try {
             return connection.read();
-        } catch (WrongDataException e) {
+        } catch (WrongDataException | ConnectionException e) {
             throw new SolutionException("WrongDataException: " + e.getMessage());
-        } catch (ConnectionException e) {
-            throw new SolutionException("ConnectionException: " + e.getMessage());
         }
     }
 
     public void disconnect() throws SolutionException {
         try {
             connection.disconnect();
-        } catch (WrongDataException e) {
+        } catch (WrongDataException | ConnectionException e) {
             throw new SolutionException("WrongDataException: " + e.getMessage());
-        } catch (ConnectionException e) {
-            throw new SolutionException("ConnectionException: " + e.getMessage());
         }
     }
 
     public static void main(String[] args) {
-
     }
 }
