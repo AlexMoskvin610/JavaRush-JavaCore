@@ -98,7 +98,7 @@ public class QueryEntry {
         sb.append(" ").append(queryFilter.name());
         sb.append(queryFilter2 != null ? " FOR " + queryFilter2.name() : "");
         sb.append(filter2Value != null ? " " + filter2Value : "");
-        sb.append(startDate == null || startDate.isEmpty() ? "}" : "AND DATE BETWEEN ");
+        sb.append(startDate == null || startDate.isEmpty() ? "}" : " AND DATE BETWEEN ");
         sb.append(endDate == null || endDate.isEmpty() ? "" : startDate + " AND " + endDate + "}");
 
         return sb.toString();

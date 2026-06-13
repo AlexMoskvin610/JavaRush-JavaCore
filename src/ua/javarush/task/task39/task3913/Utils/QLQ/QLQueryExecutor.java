@@ -74,28 +74,47 @@ public class QLQueryExecutor {
 
     //GET IP FOR USER vasya
     private Set<Object> handleType2(QueryEntry queryEntry) {
-
         String filter = queryEntry.getQueryFilter().name();
         String filter2 = queryEntry.getQueryFilter2().name();
         String filter2Value = queryEntry.getFilter2Value();
 
         switch (filter.toLowerCase()) {
-            case "user" :
+            case "user":
                 return userHelper.executeQuery(filter2, filter2Value);
-            case "ip" :
+            case "ip":
                 return ipHelper.executeQuery(filter2, filter2Value);
-            case "date" :
+            case "date":
                 return dataHelper.executeQuery(filter2, filter2Value);
-            case "event" :
+            case "event":
                 return eventHelper.executeQuery(filter2, filter2Value);
-            case "status" :
+            case "status":
                 return statusHelper.executeQuery(filter2, filter2Value);
             default:
                 throw new IllegalArgumentException("Unsupported filter: " + filter);
         }
     }
 
+    //get ip for user = "Eduard Petrovich Morozko" and date between "11.12.2013 0:00:00" and "03.01.2014 23:59:59"
     private Set<Object> handleType3(QueryEntry queryEntry) {
-        return null;
+        String filter = queryEntry.getQueryFilter().name();
+        String filter2 = queryEntry.getQueryFilter2().name();
+        String filter2Value = queryEntry.getFilter2Value();
+        String after = queryEntry.getStartDate();
+        String before = queryEntry.getEndDate();
+
+        switch (filter.toLowerCase()) {
+            case "user":
+                return userHelper.executeQueryWithDate(filter2, filter2Value, after, before);
+            case "ip":
+                return ipHelper.executeQueryWithDate(filter2, filter2Value, after, before);
+//            case "date" :
+//                return dataHelper.executeQueryWithDate(filter2, filter2Value, after, before);
+//            case "event" :
+//                return eventHelper.executeQueryWithDate(filter2, filter2Value, after, before);
+//            case "status" :
+//                return statusHelper.executeQueryWithDate(filter2, filter2Value, after, before);
+            default:
+                throw new IllegalArgumentException("Unsupported filter: " + filter);
+        }
     }
 }
