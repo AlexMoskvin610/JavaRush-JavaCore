@@ -6,7 +6,6 @@ import ua.javarush.task.task39.task3913.DTO.enums.QueryType;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -78,7 +77,15 @@ public class QLQueryReader {
         queryEntry.setFilter2Value(cleanString(query[1]));
     }
 
+    //and date between "after" and "before"
     private static void parsePart3(String part, QueryEntry queryEntry) {
+        String[] query = part.trim().split("\"+");
+        String dateAfter = query[1];
+        String dateBefore = query[3];
+
+        queryEntry.setType(3);
+        queryEntry.setStartDate(dateAfter);
+        queryEntry.setEndDate(dateBefore);
     }
 
     private static String cleanString(String string) {
