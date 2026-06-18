@@ -7,6 +7,7 @@ package ua.javarush.task.task38.task3806;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.stream.IntStream;
 
 public class Solution {
     public void printFile1() throws IOException {
@@ -16,6 +17,8 @@ public class Solution {
             while (data != -1) {
                 System.out.println(data);
                 data = fileInputStream.read();
+
+
             }
         }
     }
