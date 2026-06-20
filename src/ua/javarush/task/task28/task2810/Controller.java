@@ -22,7 +22,7 @@ public class Controller {
         List<JobPosting> jobPostings = new ArrayList<>();
   
         for (Provider provider : providers) {
-            jobPostings.addAll(provider.getJavaJobPostings(""));
+            jobPostings.addAll(provider.getJavaJobPostings("Kyiv"));
         }
 
         System.out.println(jobPostings.size());
