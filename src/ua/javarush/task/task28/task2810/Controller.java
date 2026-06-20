@@ -20,7 +20,7 @@ public class Controller {
 
     public void scan() {
         List<JobPosting> jobPostings = new ArrayList<>();
-
+  
         for (Provider provider : providers) {
             jobPostings.addAll(provider.getJavaJobPostings(""));
         }

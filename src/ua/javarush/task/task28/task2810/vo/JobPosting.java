@@ -1,8 +1,5 @@
 package ua.javarush.task.task28.task2810.vo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class JobPosting {
     private String title;
     private String city;
