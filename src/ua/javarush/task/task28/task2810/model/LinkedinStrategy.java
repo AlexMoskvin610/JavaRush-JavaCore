@@ -23,7 +23,10 @@ public class LinkedinStrategy implements Strategy {
         Document document;
 
         try {
-            document = Jsoup.connect(url).userAgent(USER_AGENT).timeout(TIMEOUT).get();
+            document = Jsoup.connect(url)
+                    .userAgent(USER_AGENT)
+                    .timeout(TIMEOUT)
+                    .get();
 
             saveHTML(document);
 
