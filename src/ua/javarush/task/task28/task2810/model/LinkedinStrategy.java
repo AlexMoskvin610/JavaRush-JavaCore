@@ -13,6 +13,7 @@ public class LinkedinStrategy implements Strategy {
     private static final String URL_FORMAT = "https://www.linkedin.com/jobs/search?keywords=Java+%s&start=%d";
     private static final String USER_AGENT = "Mozilla/5.0 (jsoup)";
     private static final int TIMEOUT = 5 * 1000;
+    private static final String WEBSITE_REFERER = "https://www.google.com/";
 
     private List<JobPosting> jobPostings;
 
@@ -25,6 +26,7 @@ public class LinkedinStrategy implements Strategy {
         try {
             document = Jsoup.connect(url)
                     .userAgent(USER_AGENT)
+                    .referrer(WEBSITE_REFERER)
                     .timeout(TIMEOUT)
                     .get();
 
