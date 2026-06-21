@@ -6,7 +6,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import ua.javarush.task.task28.task2810.vo.JobPosting;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,23 +23,30 @@ public class LinkedinStrategy implements Strategy {
         try {
             do {
                 Document doc = getDocument(searchString, start);
-                Elements vacanciesHtmlList = doc.getElementsByClass("jobs-search-result-item");
+
+                try {
+                    saveFile(doc);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Elements vacanciesHtmlList = doc.select("div.base-search-card, li.base-search-card");
 
                 if (vacanciesHtmlList.isEmpty()) {
                     break;
                 }
 
                 for (Element element : vacanciesHtmlList) {
-                    Elements title = element.getElementsByClass("listed-job-posting__title");
-                    Elements url = element.getElementsByAttributeValue("itemprop", "url");
-                    Elements locations = element.getElementsByClass("listed-job-posting__location");
-                    Elements companyName = element.getElementsByClass("listed-job-posting__company");
+                    Elements title = element.getElementsByClass("base-search-card__title");
+                    Elements url = element.getElementsByClass("base-card__full-link");
+                    Elements locations = element.getElementsByClass("job-search-card__location");
+                    Elements companyName = element.getElementsByClass("base-search-card__subtitle");
 
                     JobPosting vacancy = new JobPosting();
 
                     vacancy.setWebsiteName("linkedin.com");
                     vacancy.setTitle(title.get(0).text());
-                    vacancy.setUrl(url.attr("content"));
+                    vacancy.setUrl(url.get(0).attr("abs:href"));
                     vacancy.setCity(locations.get(0).text());
                     vacancy.setCompanyName(companyName.get(0).text());
 
@@ -48,7 +57,7 @@ public class LinkedinStrategy implements Strategy {
 
             } while (true);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return allVacancies;
@@ -58,5 +67,13 @@ public class LinkedinStrategy implements Strategy {
         return Jsoup.connect(String.format(URL_FORMAT, searchString, start))
                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36")
                 .get();
+    }
+
+    private void saveFile(Document document) throws IOException {
+        File file = new File("linkedin.html");
+
+        try (PrintWriter writer = new PrintWriter(file, "UTF-8")) {
+            writer.write(document.html());
+        }
     }
 }
