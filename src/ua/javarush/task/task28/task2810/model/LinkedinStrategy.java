@@ -1,54 +1,62 @@
-package ua.javarush.task.task28.task2810.model;
+package ua.javarush.task.task28.task2810.model; // Проверь свой точный пакет
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import ua.javarush.task.task28.task2810.vo.JobPosting;
 
-import java.io.File;
-import java.io.PrintWriter;
-import java.util.Collections;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LinkedinStrategy implements Strategy {
-    private static final String URL_FORMAT = "https://www.linkedin.com/jobs/search?keywords=Java+%s&start=%d";
-    private static final String USER_AGENT = "Mozilla/5.0 (jsoup)";
-    private static final int TIMEOUT = 5 * 1000;
-    private static final String WEBSITE_REFERER = "https://www.google.com/";
-
-    private List<JobPosting> jobPostings;
-
+    private static final String URL_FORMAT = "https://www.linkedin.com/jobs/search?keywords=java+%s&start=%d";
 
     @Override
     public List<JobPosting> getJobPostings(String searchString) {
-        String url = String.format(URL_FORMAT, searchString, 75);
-        Document document;
+        List<JobPosting> allVacancies = new ArrayList<>();
 
+        int start = 0;
         try {
-            document = Jsoup.connect(url)
-                    .userAgent(USER_AGENT)
-                    .referrer(WEBSITE_REFERER)
-                    .timeout(TIMEOUT)
-                    .get();
+            do {
+                Document doc = getDocument(searchString, start);
+                Elements vacanciesHtmlList = doc.getElementsByClass("jobs-search-result-item");
 
-            saveHTML(document);
+                if (vacanciesHtmlList.isEmpty()) {
+                    break;
+                }
 
-        } catch (Exception e) {
+                for (Element element : vacanciesHtmlList) {
+                    Elements title = element.getElementsByClass("listed-job-posting__title");
+                    Elements url = element.getElementsByAttributeValue("itemprop", "url");
+                    Elements locations = element.getElementsByClass("listed-job-posting__location");
+                    Elements companyName = element.getElementsByClass("listed-job-posting__company");
+
+                    JobPosting vacancy = new JobPosting();
+
+                    vacancy.setWebsiteName("linkedin.com");
+                    vacancy.setTitle(title.get(0).text());
+                    vacancy.setUrl(url.attr("content"));
+                    vacancy.setCity(locations.get(0).text());
+                    vacancy.setCompanyName(companyName.get(0).text());
+
+                    allVacancies.add(vacancy);
+                }
+
+                start += 25;
+
+            } while (true);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        if (jobPostings == null || jobPostings.isEmpty()) {
-            return Collections.emptyList();
-        }
 
-        return Collections.emptyList();
+        return allVacancies;
     }
 
-    private static void saveHTML(Document document) {
-        File file = new File("linkedin.html");
-
-        try (PrintWriter writer = new PrintWriter(file, "UTF-8")) {
-            writer.write(document.html());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    protected Document getDocument(String searchString, int start) throws IOException {
+        return Jsoup.connect(String.format(URL_FORMAT, searchString, start))
+                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36")
+                .get();
     }
 }
