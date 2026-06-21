@@ -1,5 +1,6 @@
 package ua.javarush.task.task28.task2810;
 
+import ua.javarush.task.task28.task2810.model.Model;
 import ua.javarush.task.task28.task2810.model.Provider;
 import ua.javarush.task.task28.task2810.vo.JobPosting;
 
@@ -8,30 +9,17 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Controller {
-    private final Provider[] providers;
+    private Model model;
 
-    public Controller(Provider... providers) {
-        if (providers == null || providers.length == 0) {
+    public Controller(Model model) {
+        if(model == null){
             throw new IllegalArgumentException();
         }
 
-        this.providers = providers;
+        this.model = model;
     }
 
-    public void scan() {
-        List<JobPosting> jobPostings = new ArrayList<>();
-  
-        for (Provider provider : providers) {
-            jobPostings.addAll(provider.getJavaJobPostings("Kyiv"));
-        }
-
-        System.out.println(jobPostings.size());
-    }
-
-    @Override
-    public String toString() {
-        return "Controller{" +
-                "providers=" + Arrays.toString(providers) +
-                '}';
+    public void onCitySelected(String cityName){
+        model.selectCity(cityName);
     }
 }
