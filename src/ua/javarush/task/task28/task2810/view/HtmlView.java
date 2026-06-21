@@ -9,16 +9,8 @@ public class HtmlView implements View {
     private Controller controller;
 
     @Override
-    public void update(List<JobPosting> jobPostings) {
-        int count = jobPostings.size();
-
-        if (count == 0) {
-            return;
-        }
-
-        String city = jobPostings.get(0).getCity();
-
-        System.out.println(count);
+    public void update(List<JobPosting> vacancies) {
+        System.out.println(vacancies.size());
     }
 
     @Override
