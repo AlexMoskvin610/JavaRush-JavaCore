@@ -14,7 +14,7 @@ public class HtmlView implements View {
     public void update(List<JobPosting> vacancies) {
         try {
             String newContent = getUpdatedFileContents(vacancies);
-
+            
             updateFile(newContent);
         } catch (Exception e) {
             e.printStackTrace();
