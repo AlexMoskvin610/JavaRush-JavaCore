@@ -6,10 +6,13 @@ import ua.javarush.task.task28.task2810.vo.JobPosting;
 import java.util.List;
 
 public class HtmlView implements View {
+    private final String filePath = "./4.JavaCollections/src/" + this.getClass().getPackage().getName().replaceAll("[.]", "/") + "/jobPostings.html";
+
     private Controller controller;
 
     @Override
     public void update(List<JobPosting> vacancies) {
+
         System.out.println(vacancies.size());
     }
 
@@ -20,5 +23,12 @@ public class HtmlView implements View {
 
     public void emulateCitySelection() {
         controller.onCitySelected("Odesa");
+    }
+
+    private String getUpdatedFileContents(List<JobPosting> vacancies) {
+        return null;
+    }
+
+    private void updateFile(String content) {
     }
 }
