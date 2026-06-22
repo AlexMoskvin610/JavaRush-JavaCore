@@ -22,8 +22,8 @@ public class IndeedStrategy implements Strategy {
         int start = 0;
         try {
             do {
-                // Document doc = getDocument(searchString, start);
-                Document doc = readDocument(searchString, start);
+                Document doc = getDocument(searchString, start);
+                // Document doc = readDocument(searchString, start);
 
                 Elements vacanciesHtmlList = doc.select(".jobsearch-SerpJobCard");
 
@@ -32,6 +32,7 @@ public class IndeedStrategy implements Strategy {
                 }
 
                 for (Element element : vacanciesHtmlList) {
+                    Elements title = element.getElementsByTag("a");
                     Elements titleAndUrl = element.getElementsByClass("turnstileLink");
                     Elements locations = element.getElementsByClass("location");
                     Elements companyName = element.getElementsByClass("company");
@@ -39,7 +40,7 @@ public class IndeedStrategy implements Strategy {
                     JobPosting vacancy = new JobPosting();
 
                     vacancy.setWebsiteName("indeed.com");
-                    vacancy.setTitle(titleAndUrl.get(0).text());
+                    vacancy.setTitle(title.get(0).attr("title"));
                     vacancy.setUrl(titleAndUrl.get(0).attr("abs:href"));
                     vacancy.setCity(locations.get(0).text());
                     vacancy.setCompanyName(companyName.get(0).text());
