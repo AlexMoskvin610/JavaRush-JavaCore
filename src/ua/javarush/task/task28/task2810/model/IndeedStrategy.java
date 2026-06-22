@@ -2,10 +2,13 @@ package ua.javarush.task.task28.task2810.model;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import ua.javarush.task.task28.task2810.vo.JobPosting;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class IndeedStrategy implements Strategy {
@@ -14,8 +17,44 @@ public class IndeedStrategy implements Strategy {
 
     @Override
     public List<JobPosting> getJobPostings(String searchString) {
+        List<JobPosting> allVacancies = new ArrayList<>();
 
-        return null;
+        int start = 0;
+        try {
+            do {
+                // Document doc = getDocument(searchString, start);
+                Document doc = readDocument(searchString, start);
+
+                Elements vacanciesHtmlList = doc.select(".jobsearch-SerpJobCard");
+
+                if (vacanciesHtmlList.isEmpty()) {
+                    break;
+                }
+
+                for (Element element : vacanciesHtmlList) {
+                    Elements titleAndUrl = element.getElementsByClass("turnstileLink");
+                    Elements locations = element.getElementsByClass("location");
+                    Elements companyName = element.getElementsByClass("company");
+
+                    JobPosting vacancy = new JobPosting();
+
+                    vacancy.setWebsiteName("indeed.com");
+                    vacancy.setTitle(titleAndUrl.get(0).text());
+                    vacancy.setUrl(titleAndUrl.get(0).attr("abs:href"));
+                    vacancy.setCity(locations.get(0).text());
+                    vacancy.setCompanyName(companyName.get(0).text());
+
+                    allVacancies.add(vacancy);
+                }
+
+                start += 25;
+
+            } while (true);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return allVacancies;
     }
 
     protected Document getDocument(String searchString, int start) throws IOException {
