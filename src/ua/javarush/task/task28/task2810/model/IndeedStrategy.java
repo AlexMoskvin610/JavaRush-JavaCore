@@ -10,9 +10,11 @@ import java.util.List;
 
 public class IndeedStrategy implements Strategy {
     private static final String URL_FORMAT = "https://www.indeed.com/jobs?q=java+%s&start=%d";
+    private static final String URL_TEMP = "https://javarush.com/testdata/big28indeed.html";
 
     @Override
     public List<JobPosting> getJobPostings(String searchString) {
+
         return null;
     }
 
