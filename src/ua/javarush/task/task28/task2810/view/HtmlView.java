@@ -12,8 +12,13 @@ public class HtmlView implements View {
 
     @Override
     public void update(List<JobPosting> vacancies) {
+        try {
+            String newContent = getUpdatedFileContents(vacancies);
 
-        System.out.println(vacancies.size());
+            updateFile(newContent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
