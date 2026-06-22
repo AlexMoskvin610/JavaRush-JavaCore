@@ -48,6 +48,7 @@ public class HtmlView implements View {
            }
 
            Element elementOriginal = elements.get(0);
+           Element templatePattern = cleanElements(elementOriginal);
 
            removeOldVacancies(document);
 
@@ -56,7 +57,7 @@ public class HtmlView implements View {
            //<td class="companyName"></td>
 
            for (JobPosting vacancy : vacancies) {
-               Element templatePattern = cleanElements(elementOriginal);
+               templatePattern = cleanElements(elementOriginal);
 
                // Назва вакансії (текст всередині тегу <a>, який лежить в <td class="title">)
                Element titleLink = templatePattern.getElementsByClass("title").select("a").first();
@@ -80,11 +81,14 @@ public class HtmlView implements View {
                elementOriginal.before(templatePattern);
            }
 
+           return document.html();
+
        }catch (Exception e){
            e.printStackTrace();
+
+           return "Some exception occurred";
        }
 
-        return "Some exception occurred";
     }
 
     private Element cleanElements(Element elementOriginal) {
@@ -115,4 +119,3 @@ public class HtmlView implements View {
         }
     }
 }
-
