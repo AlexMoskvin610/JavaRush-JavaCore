@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class HtmlView implements View {
-    // private final String filePath = "./4.JavaCollections/src/" + this.getClass().getPackage().getName().replaceAll("[.]", "/") + "/jobPostings.html";
-    private final String filePath = "src/ua/javarush/task/task28/task2810/view/jobPostingsTest.html";
+    private final String filePath = "./4.JavaCollections/src/" + this.getClass().getPackage().getName().replaceAll("[.]", "/") + "/jobPostings.html";
+    //private final String filePath = "src/ua/javarush/task/task28/task2810/view/jobPostingsTest.html";
 
     private Controller controller;
 
