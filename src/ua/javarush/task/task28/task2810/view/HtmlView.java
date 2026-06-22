@@ -8,6 +8,7 @@ import ua.javarush.task.task28.task2810.Controller;
 import ua.javarush.task.task28.task2810.vo.JobPosting;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
@@ -47,11 +48,38 @@ public class HtmlView implements View {
            }
 
            Element elementOriginal = elements.get(0);
-           Element templatePattern = getTemplatePattern(elementOriginal);
 
            removeOldVacancies(document);
 
-           System.out.println(document);
+           //<td class="title"><a href="url"></a></td>
+           //<td class="city"></td>
+           //<td class="companyName"></td>
+
+           for (JobPosting vacancy : vacancies) {
+               Element templatePattern = cleanElements(elementOriginal);
+
+               // Назва вакансії (текст всередині тегу <a>, який лежить в <td class="title">)
+               Element titleLink = templatePattern.getElementsByClass("title").select("a").first();
+               if (titleLink != null) {
+                   titleLink.text(vacancy.getTitle());          // Встановлюємо назву вакансії
+                   titleLink.attr("href", vacancy.getUrl());    // Встановлюємо посилання на вакансію
+               }
+
+               // Місто (текст всередині <td class="city">)
+               Element cityElement = templatePattern.getElementsByClass("city").first();
+               if (cityElement != null) {
+                   cityElement.text(vacancy.getCity());
+               }
+
+               // Назва компанії (текст всередині <td class="companyName">)
+               Element companyElement = templatePattern.getElementsByClass("companyName").first();
+               if (companyElement != null) {
+                   companyElement.text(vacancy.getCompanyName());
+               }
+
+               elementOriginal.before(templatePattern);
+           }
+
        }catch (Exception e){
            e.printStackTrace();
        }
@@ -59,7 +87,7 @@ public class HtmlView implements View {
         return "Some exception occurred";
     }
 
-    private Element getTemplatePattern(Element elementOriginal) {
+    private Element cleanElements(Element elementOriginal) {
         Element templatePattern = elementOriginal.clone();
 
         templatePattern.removeAttr("style");
@@ -78,12 +106,13 @@ public class HtmlView implements View {
 
     //content - нове тіло файлу
     private void updateFile(String content) {
-//        try (FileWriter fileWriter = new FileWriter(filePath)) {
-//            fileWriter.write(content);
-//            fileWriter.flush();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try (FileWriter fileWriter = new FileWriter(filePath)) {
+
+            fileWriter.write(content);
+            fileWriter.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 
