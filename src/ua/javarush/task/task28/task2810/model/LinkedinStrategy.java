@@ -22,7 +22,8 @@ public class LinkedinStrategy implements Strategy {
         int start = 0;
         try {
             do {
-                Document doc = getDocument(searchString, start);
+               // Document doc = getDocument(searchString, start);
+                Document doc = readDocument(searchString, start);
 
                 Elements vacanciesHtmlList = doc.select("div.base-search-card, li.base-search-card");
 
@@ -61,5 +62,15 @@ public class LinkedinStrategy implements Strategy {
         return Jsoup.connect(String.format(URL_FORMAT, searchString, start))
                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36")
                 .get();
+    }
+
+    protected Document readDocument(String searchString, int start) throws IOException {
+        if (start == 0) {
+            File input = new File("src/ua/javarush/task/task28/task2810/linkedin.html");
+
+            return Jsoup.parse(input, "UTF-8", "https://www.linkedin.com/");
+        }
+
+        return Jsoup.parse("<html><body></body></html>");
     }
 }
