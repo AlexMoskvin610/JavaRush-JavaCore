@@ -3,6 +3,7 @@ package ua.javarush.task.task28.task2810.view;
 import ua.javarush.task.task28.task2810.Controller;
 import ua.javarush.task.task28.task2810.vo.JobPosting;
 
+import java.io.FileWriter;
 import java.util.List;
 
 public class HtmlView implements View {
@@ -34,6 +35,13 @@ public class HtmlView implements View {
         return null;
     }
 
+    //content - нове тіло файлу
     private void updateFile(String content) {
+        try (FileWriter fileWriter = new FileWriter(filePath)) {
+            fileWriter.write(content);
+            fileWriter.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
