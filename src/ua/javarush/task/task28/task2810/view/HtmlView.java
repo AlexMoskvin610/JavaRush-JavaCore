@@ -8,7 +8,6 @@ import ua.javarush.task.task28.task2810.Controller;
 import ua.javarush.task.task28.task2810.vo.JobPosting;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
@@ -48,18 +47,33 @@ public class HtmlView implements View {
            }
 
            Element elementOriginal = elements.get(0);
-           Element templatePattern = elementOriginal.clone();
+           Element templatePattern = getTemplatePattern(elementOriginal);
 
-           templatePattern.removeAttr("style");
-           templatePattern.removeClass("template");
+           removeOldVacancies(document);
 
-           System.out.println("Original Element: " + elementOriginal);
-           System.out.println("Template Pattern: " + templatePattern.html());
+           System.out.println(document);
        }catch (Exception e){
            e.printStackTrace();
        }
 
         return "Some exception occurred";
+    }
+
+    private Element getTemplatePattern(Element elementOriginal) {
+        Element templatePattern = elementOriginal.clone();
+
+        templatePattern.removeAttr("style");
+        templatePattern.removeClass("template");
+
+        return templatePattern;
+    }
+
+    protected Document getDocument() throws IOException {
+        return Jsoup.parse(new File(filePath), "UTF-8");
+    }
+
+    private void removeOldVacancies(Document document) {
+        document.select("tr.vacancy:not(.template)").remove();
     }
 
     //content - нове тіло файлу
@@ -71,8 +85,5 @@ public class HtmlView implements View {
 //            e.printStackTrace();
 //        }
     }
-
-    protected Document getDocument() throws IOException {
-        return Jsoup.parse(new File(filePath), "UTF-8");
-    }
 }
+
