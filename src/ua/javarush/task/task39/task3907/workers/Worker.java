@@ -1,0 +1,9 @@
+package ua.javarush.task.task39.task3907.workers;
+
+public interface Worker {
+    void work();
+
+    void eat();
+
+    void sleep();
+}
