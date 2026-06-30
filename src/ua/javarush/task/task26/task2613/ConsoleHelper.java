@@ -31,6 +31,24 @@ public class ConsoleHelper {
         return askCurrencyCode();
     }
 
+    public static Operation askOperation() {
+        writeMessage("Please choose an operation:");
+        writeMessage("1 - INFO");
+        writeMessage("2 - DEPOSIT");
+        writeMessage("3 - WITHDRAW");
+        writeMessage("4 - EXIT");
+
+        try {
+            int choice = Integer.parseInt(readString());
+
+            return Operation.getAllowableOperationByOrdinal(choice);
+        } catch (Exception e) {
+            writeMessage("Invalid input. Please try again.");
+        }
+
+        return askOperation();
+    }
+
     public static String [] getValidTwoDigits(String currencyCode) {
         writeMessage("Please enter denomination and number of banknotes, like ---> 256 5:");
 
