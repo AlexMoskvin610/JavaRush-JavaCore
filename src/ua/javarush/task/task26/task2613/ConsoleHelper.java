@@ -6,11 +6,11 @@ import java.io.InputStreamReader;
 public class ConsoleHelper {
     private static final BufferedReader bis = new BufferedReader(new InputStreamReader(System.in));
 
-    private static void writeMessage(String message) {
+    public static void writeMessage(String message) {
         System.out.println(message);
     }
 
-    private static String readString() {
+    public static String readString() {
         try{
             return bis.readLine();
         }catch(Exception e){}

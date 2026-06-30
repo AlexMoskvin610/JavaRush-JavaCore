@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class CurrencyManipulator {
     private String currencyCode;
-    private Map<Integer, Integer> denominations;
+    private Map<Integer, Integer> denominations = new HashMap<>();
 
     public CurrencyManipulator(String currencyCode) {
         if (currencyCode == null || currencyCode.length() < 3) {
@@ -16,10 +16,6 @@ public class CurrencyManipulator {
     }
 
     public void addAmount(int denomination, int count) {
-        if (denominations == null) {
-            denominations = new HashMap<>();
-        }
-
         denominations.merge(denomination, count, Integer::sum);
     }
 
@@ -35,6 +31,10 @@ public class CurrencyManipulator {
         }
 
         return total;
+    }
+
+    public boolean hasMoney(){
+        return !denominations.isEmpty();
     }
 
     @Override
