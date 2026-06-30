@@ -27,6 +27,16 @@ public class CurrencyManipulator {
         return currencyCode;
     }
 
+    public int getTotalAmount() {
+        int total = 0;
+
+        for (Map.Entry<Integer, Integer> entry : denominations.entrySet()) {
+            total += entry.getKey() * entry.getValue();
+        }
+
+        return total;
+    }
+
     @Override
     public String toString() {
         return "CurrencyManipulator{" +

@@ -13,5 +13,6 @@ public class CashMachine {
         manipulator.addAmount(Integer.parseInt(twoDigits[0]), Integer.parseInt(twoDigits[1]));
 
         System.out.println(manipulator);
+        System.out.println(manipulator.getTotalAmount());
     }
 }

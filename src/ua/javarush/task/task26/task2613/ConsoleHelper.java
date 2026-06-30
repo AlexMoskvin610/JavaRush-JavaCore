@@ -31,7 +31,7 @@ public class ConsoleHelper {
         return askCurrencyCode();
     }
 
-    public static String[] getValidTwoDigits(String currencyCode) {
+    public static String [] getValidTwoDigits(String currencyCode) {
         writeMessage("Please enter denomination and number of banknotes, like ---> 256 5:");
 
         try {
