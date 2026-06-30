@@ -40,7 +40,7 @@ public class ConsoleHelper {
 
         try {
             int choice = Integer.parseInt(readString());
-
+            
             return Operation.getAllowableOperationByOrdinal(choice);
         } catch (Exception e) {
             writeMessage("Invalid input. Please try again.");
