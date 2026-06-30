@@ -2,6 +2,6 @@ package ua.javarush.task.task26.task2613;
 
 public class CashMachine {
     public static void main(String[] args) {
-
+        System.out.println(ConsoleHelper.askCurrencyCode());
     }
 }

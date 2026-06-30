@@ -17,4 +17,21 @@ public class ConsoleHelper {
 
         return "";
     }
+
+    public static String askCurrencyCode() {
+        writeMessage("Please enter currency code:");
+
+        String currencyCode = readString();
+
+        if (isCurrencyCorrect(currencyCode)) {
+            return currencyCode.trim().toUpperCase();
+        } else
+            writeMessage("Your currency code is incorrect. Please try again.");
+
+        return askCurrencyCode();
+    }
+
+    private static boolean isCurrencyCorrect(String currencyCode) {
+        return currencyCode != null && currencyCode.trim().length() == 3;
+    }
 }
