@@ -24,8 +24,8 @@ public class Solution {
     public static void main(String[] args) {
         LogParser logParser = new LogParser(Paths.get(LOG_FILE_PATH));
 
-        // System.out.println(logParser.execute(TYPE3_QUERY));
-       // System.out.println(logParser.execute(getIPforStatus));
+        // System.out.readString(logParser.execute(TYPE3_QUERY));
+       // System.out.readString(logParser.execute(getIPforStatus));
         System.out.println(logParser.execute(getIPforEvent));
     }
 }
