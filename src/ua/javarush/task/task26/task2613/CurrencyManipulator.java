@@ -44,4 +44,15 @@ public class CurrencyManipulator {
                 ", denominations=" + denominations +
                 '}';
     }
+
+    public Map<Integer, Integer> withdrawAmount(int amount) {
+        // Implementation for withdrawing amount
+        return new HashMap<>();
+    }
+
+
+    public boolean isAmountAvailable(int expectedAmount) {
+        return getTotalAmount() >= expectedAmount;
+    }
+
 }
