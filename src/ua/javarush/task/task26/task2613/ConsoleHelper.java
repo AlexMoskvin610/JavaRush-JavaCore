@@ -1,6 +1,9 @@
 package ua.javarush.task.task26.task2613;
 
+import ua.javarush.task.task26.task2613.exception.InterruptOperationException;
+
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class ConsoleHelper {
@@ -10,15 +13,18 @@ public class ConsoleHelper {
         System.out.println(message);
     }
 
-    public static String readString() {
+    public static String readString() throws InterruptOperationException {
         try{
-            return bis.readLine();
-        }catch(Exception e){}
+            String input = bis.readLine();
+            chekIsExit(input);
+
+            return input;
+        } catch (IOException ignored) {}
 
         return "";
     }
 
-    public static String askCurrencyCode() {
+    public static String askCurrencyCode() throws InterruptOperationException {
         writeMessage("Please enter currency code:");
 
         String currencyCode = readString();
@@ -31,7 +37,7 @@ public class ConsoleHelper {
         return askCurrencyCode();
     }
 
-    public static Operation askOperation() {
+    public static Operation askOperation() throws InterruptOperationException {
         writeMessage("Please choose an operation:");
         writeMessage("1 - INFO");
         writeMessage("2 - DEPOSIT");
@@ -39,21 +45,27 @@ public class ConsoleHelper {
         writeMessage("4 - EXIT");
 
         try {
-            int choice = Integer.parseInt(readString());
+            String answer = ConsoleHelper.readString();
+
+            chekIsExit(answer);
+
+            int choice = Integer.parseInt(answer);
             
             return Operation.getAllowableOperationByOrdinal(choice);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             writeMessage("Invalid input. Please try again.");
         }
 
         return askOperation();
     }
 
-    public static String [] getValidTwoDigits(String currencyCode) {
+    public static String[] getValidTwoDigits(String currencyCode) throws InterruptOperationException {
         writeMessage("Please enter denomination and number of banknotes, like ---> 256 5:");
 
         try {
             String input = readString().toLowerCase();
+
+            chekIsExit(input);
 
             if (input.matches("\\d+ \\d+")) {
 
@@ -61,7 +73,7 @@ public class ConsoleHelper {
             } else {
                 throw new IllegalArgumentException("Invalid input format.");
             }
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             writeMessage("Invalid input. Please try again.");
         }
 
@@ -70,5 +82,11 @@ public class ConsoleHelper {
 
     private static boolean isCurrencyCorrect(String currencyCode) {
         return currencyCode != null && currencyCode.trim().length() == 3;
+    }
+
+    private static void chekIsExit(String input) throws InterruptOperationException {
+        if (input.equalsIgnoreCase("exit")) {
+            throw new InterruptOperationException("Operation was interrupted.");
+        }
     }
 }

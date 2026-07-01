@@ -14,7 +14,7 @@ public enum Operation {
             case 4:
                 return Operation.EXIT;
             default:
-                throw new IllegalArgumentException("Invalid operation ordinal.");
+                throw new IllegalArgumentException("Invalid operation number.");
         }
     }
-    }
+}
