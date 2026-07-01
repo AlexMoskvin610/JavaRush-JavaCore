@@ -56,7 +56,7 @@ public class CurrencyManipulator {
 
         List<Integer> nominals = denominations.keySet().stream()
                 .sorted(Comparator.reverseOrder())
-                .toList();
+                .collect(Collectors.toList());
 
         int remainingAmount = amount;
 
