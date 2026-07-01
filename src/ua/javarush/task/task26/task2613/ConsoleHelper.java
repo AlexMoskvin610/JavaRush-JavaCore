@@ -21,7 +21,7 @@ public class ConsoleHelper {
             return input;
         } catch (IOException ignored) {}
 
-        return "";
+        return null;
     }
 
     public static String askCurrencyCode() throws InterruptOperationException {
@@ -85,8 +85,8 @@ public class ConsoleHelper {
     }
 
     private static void chekIsExit(String input) throws InterruptOperationException {
-        if (input.equalsIgnoreCase("exit")) {
-            throw new InterruptOperationException("Operation was interrupted.");
+        if ("exit".equalsIgnoreCase(input)) {
+            throw new InterruptOperationException();
         }
     }
 }
