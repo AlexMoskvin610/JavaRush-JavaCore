@@ -5,9 +5,12 @@ import ua.javarush.task.task26.task2613.exception.InterruptOperationException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ResourceBundle;
 
 public class ConsoleHelper {
     private static final BufferedReader bis = new BufferedReader(new InputStreamReader(System.in));
+    private static final ResourceBundle res =
+            ResourceBundle.getBundle(CashMachine.class.getPackage().getName() + ".resources.common");
 
     public static void writeMessage(String message) {
         System.out.println(message);
@@ -25,24 +28,24 @@ public class ConsoleHelper {
     }
 
     public static String askCurrencyCode() throws InterruptOperationException {
-        writeMessage("Please enter currency code:");
+        writeMessage(res.getString("choose.currency.code"));
 
         String currencyCode = readString();
 
         if (isCurrencyCorrect(currencyCode)) {
             return currencyCode.trim().toUpperCase();
         } else
-            writeMessage("Your currency code is incorrect. Please try again.");
+            writeMessage(res.getString("invalid.data"));
 
         return askCurrencyCode();
     }
 
     public static Operation askOperation() throws InterruptOperationException {
-        writeMessage("Please choose an operation:");
-        writeMessage("1 - INFO");
-        writeMessage("2 - DEPOSIT");
-        writeMessage("3 - WITHDRAW");
-        writeMessage("4 - EXIT");
+        writeMessage(res.getString("choose.operation"));
+        writeMessage(res.getString("operation.INFO"));
+        writeMessage(res.getString("operation.DEPOSIT"));
+        writeMessage(res.getString("operation.WITHDRAW"));
+        writeMessage(res.getString("operation.EXIT"));
 
         try {
             String answer = ConsoleHelper.readString();
@@ -53,14 +56,14 @@ public class ConsoleHelper {
             
             return Operation.getAllowableOperationByOrdinal(choice);
         } catch (IllegalArgumentException e) {
-            writeMessage("Invalid input. Please try again.");
+            writeMessage(res.getString("invalid.data"));
         }
 
         return askOperation();
     }
 
     public static String[] getValidTwoDigits(String currencyCode) throws InterruptOperationException {
-        writeMessage("Please enter denomination and number of banknotes, like ---> 256 5:");
+        writeMessage(String.format(res.getString("choose.denomination.and.count.format"), currencyCode));
 
         try {
             String input = readString().toLowerCase();
@@ -71,10 +74,10 @@ public class ConsoleHelper {
 
                 return input.trim().split(" ");
             } else {
-                throw new IllegalArgumentException("Invalid input format.");
+                throw new IllegalArgumentException();
             }
         } catch (IllegalArgumentException e) {
-            writeMessage("Invalid input. Please try again.");
+            writeMessage(res.getString("invalid.data"));
         }
 
         return getValidTwoDigits(currencyCode);

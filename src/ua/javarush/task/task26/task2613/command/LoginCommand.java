@@ -9,28 +9,29 @@ import java.util.ResourceBundle;
 public class LoginCommand implements Command {
     private final ResourceBundle validCreditCards =
             ResourceBundle.getBundle(CashMachine.class.getPackage().getName() + ".resources.verifiedCards");
+    private final ResourceBundle res =
+            ResourceBundle.getBundle(CashMachine.class.getPackage().getName() + ".resources.login");
 
     @Override
     public void execute() throws InterruptOperationException {
-        ConsoleHelper.writeMessage("Logging in...");
+        ConsoleHelper.writeMessage(res.getString("before"));
 
         while (true) {
-            ConsoleHelper.writeMessage("Please specify your credit card number and pin code or type 'EXIT' for exiting.");
+            ConsoleHelper.writeMessage(res.getString("specify.data"));
             String creditCardNumber = ConsoleHelper.readString();
             String pin = ConsoleHelper.readString();
 
-
             if (creditCardNumber == null || (creditCardNumber = creditCardNumber.trim()).length() != 12 ||
                     pin == null || (pin = pin.trim()).length() != 4) {
-                ConsoleHelper.writeMessage("Please specify valid credit card number - 12 digits, pin code - 4 digits.");
+                ConsoleHelper.writeMessage(res.getString("try.again.with.details"));
             } else {
                 if (validCreditCards.containsKey(creditCardNumber) && validCreditCards.getString(creditCardNumber).equals(pin)) {
-                    ConsoleHelper.writeMessage(String.format("Verification for card %s successfully completed.", creditCardNumber));
+                    ConsoleHelper.writeMessage(String.format(res.getString("success.format"), creditCardNumber));
 
                     break;
                 } else {
-                    ConsoleHelper.writeMessage(String.format("Card %s is not valid.", creditCardNumber));
-                    ConsoleHelper.writeMessage("Please try again.");
+                    ConsoleHelper.writeMessage(String.format(res.getString("not.verified.format"), creditCardNumber));
+                    ConsoleHelper.writeMessage(res.getString("try.again.or.exit"));
                 }
             }
         }
