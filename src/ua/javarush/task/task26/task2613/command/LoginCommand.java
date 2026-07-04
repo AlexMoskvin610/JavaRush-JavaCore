@@ -1,12 +1,14 @@
 package ua.javarush.task.task26.task2613.command;
 
-
+import ua.javarush.task.task26.task2613.CashMachine;
 import ua.javarush.task.task26.task2613.ConsoleHelper;
 import ua.javarush.task.task26.task2613.exception.InterruptOperationException;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
-class LoginCommand implements Command {
-    private String validCreditCard = "123456789012";
-    private String validPin = "1234";
+public class LoginCommand implements Command {
+    private final ResourceBundle validCreditCards =
+            ResourceBundle.getBundle(CashMachine.class.getPackage().getName() + ".resources.verifiedCards");
 
     @Override
     public void execute() throws InterruptOperationException {
@@ -15,24 +17,22 @@ class LoginCommand implements Command {
         while (true) {
             ConsoleHelper.writeMessage("Please specify your credit card number and pin code or type 'EXIT' for exiting.");
             String creditCardNumber = ConsoleHelper.readString();
-            String pinStr = ConsoleHelper.readString();
+            String pin = ConsoleHelper.readString();
+
+
             if (creditCardNumber == null || (creditCardNumber = creditCardNumber.trim()).length() != 12 ||
-                    pinStr == null || (pinStr = pinStr.trim()).length() != 4) {
+                    pin == null || (pin = pin.trim()).length() != 4) {
                 ConsoleHelper.writeMessage("Please specify valid credit card number - 12 digits, pin code - 4 digits.");
             } else {
-                try {
-                    if (creditCardNumber.equals(validCreditCard) && pinStr.equals(validPin)) {
-                        ConsoleHelper.writeMessage(String.format("Credit card [%s] is verified successfully!", creditCardNumber));
-                        break;
-                    } else {
-                        ConsoleHelper.writeMessage(String.format("Credit card [%s] is not verified.", creditCardNumber));
-                        ConsoleHelper.writeMessage("Please try again or type 'EXIT' for urgent exiting");
-                    }
-                } catch (NumberFormatException e) {
-                    ConsoleHelper.writeMessage("Please specify valid credit card number - 12 digits, pin code - 4 digits.");
+                if (validCreditCards.containsKey(creditCardNumber) && validCreditCards.getString(creditCardNumber).equals(pin)) {
+                    ConsoleHelper.writeMessage(String.format("Verification for card %s successfully completed.", creditCardNumber));
+
+                    break;
+                } else {
+                    ConsoleHelper.writeMessage(String.format("Card %s is not valid.", creditCardNumber));
+                    ConsoleHelper.writeMessage("Please try again.");
                 }
             }
         }
-
     }
 }
