@@ -14,6 +14,7 @@ public class CommandExecutor {
     static  {
         allKnownCommandsMap = new HashMap<>();
 
+        allKnownCommandsMap.put(Operation.LOGIN, new LoginCommand());
         allKnownCommandsMap.put(Operation.DEPOSIT, new DepositCommand());
         allKnownCommandsMap.put(Operation.WITHDRAW, new WithdrawCommand());
         allKnownCommandsMap.put(Operation.INFO, new InfoCommand());
