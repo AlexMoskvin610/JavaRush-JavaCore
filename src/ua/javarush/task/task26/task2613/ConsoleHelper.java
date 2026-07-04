@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 public class ConsoleHelper {
     private static final BufferedReader bis = new BufferedReader(new InputStreamReader(System.in));
     private static final ResourceBundle res =
-            ResourceBundle.getBundle(CashMachine.class.getPackage().getName() + ".resources.common");
+            ResourceBundle.getBundle(CashMachine.RESOURCE_PATH + "common");
 
     public static void writeMessage(String message) {
         System.out.println(message);
@@ -91,5 +91,9 @@ public class ConsoleHelper {
         if ("exit".equalsIgnoreCase(input)) {
             throw new InterruptOperationException();
         }
+    }
+
+    public static void printExitMessage() {
+        System.out.println(res.getString("the.end"));
     }
 }

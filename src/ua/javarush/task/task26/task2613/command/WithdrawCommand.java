@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 
 class WithdrawCommand implements Command {
     private final ResourceBundle res =
-            ResourceBundle.getBundle(CashMachine.class.getPackage().getName() + ".resources.withdraw");
+            ResourceBundle.getBundle(CashMachine.RESOURCE_PATH + "withdraw");
 
     private CurrencyManipulator manipulator;
 

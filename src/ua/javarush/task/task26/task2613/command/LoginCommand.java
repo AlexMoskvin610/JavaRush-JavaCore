@@ -8,9 +8,9 @@ import java.util.ResourceBundle;
 
 public class LoginCommand implements Command {
     private final ResourceBundle validCreditCards =
-            ResourceBundle.getBundle(CashMachine.class.getPackage().getName() + ".resources.verifiedCards");
+            ResourceBundle.getBundle(CashMachine.RESOURCE_PATH + "verifiedCards");
     private final ResourceBundle res =
-            ResourceBundle.getBundle(CashMachine.class.getPackage().getName() + ".resources.login");
+            ResourceBundle.getBundle(CashMachine.RESOURCE_PATH + "login");
 
     @Override
     public void execute() throws InterruptOperationException {
