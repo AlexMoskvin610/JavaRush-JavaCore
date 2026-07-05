@@ -1,5 +1,7 @@
 package ua.javarush.task.task40.task4001;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -13,14 +15,20 @@ POST, а не GET
 public class Solution {
     public static void main(String[] args) throws Exception {
         Solution solution = new Solution();
-        solution.sendPost(new URL("http://requestb.in/1cse9qt1"), "name=zapp&mood=good&locale=&id=777");
+        solution.sendPost(new URL("https://eou17igtojy4bhn.m.pipedream.net"), "name=zapp&mood=good&locale=&id=777");
     }
 
     public void sendPost(URL url, String urlParameters) throws Exception {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-        connection.setRequestMethod("GET");
+        connection.setRequestMethod("POST");
         connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+        connection.setDoOutput(true);
+
+        DataOutputStream dataOutputStream = new DataOutputStream(connection.getOutputStream());
+        dataOutputStream.writeBytes(urlParameters);
+        dataOutputStream.flush();
+        dataOutputStream.close();
 
         int responseCode = connection.getResponseCode();
         System.out.println("Response Code: " + responseCode);
