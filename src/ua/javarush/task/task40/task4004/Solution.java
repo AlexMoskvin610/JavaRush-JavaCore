@@ -2,6 +2,7 @@ package ua.javarush.task.task40.task4004;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.*;
 
 /* 
 Приналежність точки до багатокутника
@@ -27,20 +28,17 @@ public class Solution {
         polygon.add(new Point(10, 0));
 
         System.out.println(isPointInPolygon(new Point(5, 5), polygon));
-        System.out.println(isPointInPolygon(new Point(10, 5), polygon));
-        System.out.println(isPointInPolygon(new Point(2, 8), polygon));
-        System.out.println(isPointInPolygon(new Point(11, 10), polygon));
         System.out.println(isPointInPolygon(new Point(100, 100), polygon));
     }
 
     public static boolean isPointInPolygon(Point point, List<Point> polygon) {
-        int maxX = polygon.stream().mapToInt(p -> p.x).max().orElse(0);
-        int minX = polygon.stream().mapToInt(p -> p.x).min().orElse(0);
+       Polygon poligon = new Polygon();
 
-        int maxY = polygon.stream().mapToInt(p -> p.y).max().orElse(0);
-        int minY = polygon.stream().mapToInt(p -> p.y).min().orElse(0);
+        for (Point p : polygon) {
+            poligon.addPoint(p.x, p.y);
+        }
 
-        return point.x >= minX && point.x <= maxX  && point.y >= minY && point.y <= maxY;
+        return poligon.contains(point.x, point.y);
     }
 }
 

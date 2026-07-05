@@ -37,5 +37,6 @@
     <orderEntry type="library" name="jackson-annotations-2.22" level="project" />
     <orderEntry type="library" name="httpclient-4.5.14" level="project" />
     <orderEntry type="library" name="javax.mail-1.6.2" level="project" />
+    <orderEntry type="library" name="java.awt-1.0.5" level="project" />
   </component>
 </module>
