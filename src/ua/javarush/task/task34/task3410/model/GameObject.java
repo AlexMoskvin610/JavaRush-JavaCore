@@ -5,8 +5,6 @@ import java.awt.*;
 import static ua.javarush.task.task34.task3410.model.Model.FIELD_CELL_SIZE;
 
 public abstract class GameObject {
-
-
     int x;
     int y;
     int width;
