@@ -37,4 +37,12 @@ public class View extends JFrame {
     public void update() {
         field.repaint();
     }
+
+    public void completed(int level) {
+        this.update();
+        JOptionPane.showMessageDialog(this,
+                "Level " + level + " completed!", "Congratulations!",
+                JOptionPane.INFORMATION_MESSAGE);
+        controller.startNextLevel();
+    }
 }

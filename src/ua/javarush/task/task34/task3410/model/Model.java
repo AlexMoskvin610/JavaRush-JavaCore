@@ -26,7 +26,7 @@ public class Model {
     }
 
     public void restart() {
-        restartLevel(currentLevel);
+
     }
 
     public void startNextLevel() {
@@ -36,5 +36,8 @@ public class Model {
     public void restartLevel(int level) {
         this.currentLevel = level;
         this.gameObjects = levelLoader.getLevel(level);
+    }
+
+    public void move(Direction direction) {
     }
 }
