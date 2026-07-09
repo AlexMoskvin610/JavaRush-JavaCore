@@ -90,4 +90,22 @@ public class Model {
 
         return false;
     }
+
+    public void checkCompletion(){
+        Set<Home> homes = gameObjects.getHomes();
+        int controlCount = 0;
+
+        for (Home home : homes) {
+            for (Box box : gameObjects.getBoxes()) {
+               if(home.getX() == box.getX() && home.getY() == box.getY()){
+                   controlCount++;
+                   break;
+               }
+            }
+        }
+
+        if (controlCount == homes.size()) {
+            eventListener.levelCompleted(currentLevel);
+        }
+    }
 }
