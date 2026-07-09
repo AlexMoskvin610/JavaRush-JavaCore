@@ -2,28 +2,22 @@ package ua.javarush.task.task34.task3410.controller;
 
 import ua.javarush.task.task34.task3410.model.Direction;
 import ua.javarush.task.task34.task3410.model.GameObjects;
-import ua.javarush.task.task34.task3410.model.LevelLoader;
 import ua.javarush.task.task34.task3410.model.Model;
-import ua.javarush.task.task34.task3410.view.Field;
 import ua.javarush.task.task34.task3410.view.View;
 
-import java.awt.event.ActionListener;
-
 public class Controller implements EventListener {
-    private Model model;
     private View view;
+    private Model model;
 
     public Controller() {
-        this.model = new Model();
-        this.view = new View(this);
+        model = new Model();
+        view = new View(this);
 
-        this.model.setEventListener(this);
-        this.view.setEventListener(this);
+        view.init();
+        model.restart();
 
-        this.view.init();
-        this.model.restart();
-
-
+        model.setEventListener(this);
+        view.setEventListener(this);
     }
 
     public static void main(String[] args) {

@@ -13,7 +13,6 @@ import java.util.Set;
 public class Field extends JPanel {
     private View view;
     private EventListener eventListener;
-    private Set<GameObject> gameObjects;
 
     public Field(View view) {
         this.view = view;
@@ -25,7 +24,7 @@ public class Field extends JPanel {
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, getWidth(), getHeight());
 
-        gameObjects = view.getGameObjects().getAll();
+        Set<GameObject> gameObjects = view.getGameObjects().getAll();
 
         for (GameObject gameObject : gameObjects) {
             gameObject.draw(graphics);
