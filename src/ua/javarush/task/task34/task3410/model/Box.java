@@ -17,14 +17,14 @@ public class Box extends CollisionObject implements Movable {
     public void draw(Graphics graphics) {
         graphics.setColor(Color.ORANGE);
 
-        int leftX = this.getX() - getWidth() / 2;
-        int upperY = this.getY() - getHeight() / 2;
+        int upperleftX = this.getX() - getWidth() / 2;
+        int upperLeftY = this.getY() - getHeight() / 2;
 
-        // graphics.fillRect(leftX, upperY, getWidth(), getHeight());
+        // graphics.fillRect(upperleftX, upperLeftY, getWidth(), getHeight());
 
        // graphics.setColor(Color.BLACK);
-        graphics.drawRect(leftX, upperY, getWidth(), getHeight());
-        graphics.drawLine(leftX, upperY, leftX + getWidth(), upperY + getHeight());
-        graphics.drawLine(leftX, upperY + getHeight(), leftX + getWidth(), upperY);
+        graphics.drawRect(upperleftX, upperLeftY, getWidth(), getHeight());
+        graphics.drawLine(upperleftX, upperLeftY, upperleftX + getWidth(), upperLeftY + getHeight());
+        graphics.drawLine(upperleftX, upperLeftY + getHeight(), upperleftX + getWidth(), upperLeftY);
     }
 }

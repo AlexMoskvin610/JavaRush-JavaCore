@@ -13,6 +13,9 @@ public class Home extends GameObject{
     public void draw(Graphics graphics) {
         graphics.setColor(Color.RED);
 
-        graphics.drawOval(this.getX(), this.getY(), getWidth(), getHeight());
+        int upperLeftX = this.getX() - getWidth() / 2;
+        int upperLeftY = this.getY() - getHeight() / 2;
+
+        graphics.drawOval(upperLeftX, upperLeftY, getWidth(), getHeight());
     }
 }

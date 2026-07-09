@@ -17,12 +17,12 @@ public class Player extends CollisionObject implements Movable {
     public void draw(Graphics graphics) {
         graphics.setColor(Color.CYAN);
 
-        int leftX = this.getX() - getWidth() / 2;
-        int upperY = this.getY() - getHeight() / 2;
+        int upperLeftX = this.getX() - getWidth() / 2;
+        int upperLeftY = this.getY() - getHeight() / 2;
 
-      //  graphics.fillOval(leftX, upperY, getWidth(), getHeight());
+      //  graphics.fillOval(upperLeftX, upperLeftY, getWidth(), getHeight());
 
       //  graphics.setColor(Color.BLACK);
-        graphics.drawOval(leftX, upperY, getWidth(), getHeight());
+        graphics.drawOval(upperLeftX, upperLeftY, getWidth(), getHeight());
     }
 }
