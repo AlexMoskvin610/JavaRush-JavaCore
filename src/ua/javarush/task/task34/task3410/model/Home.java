@@ -1,0 +1,21 @@
+package ua.javarush.task.task34.task3410.model;
+
+import java.awt.*;
+
+public class Home extends GameObject{
+    public Home(int x, int y) {
+        super(x, y);
+        this.width = 2;
+        this.height = 2;
+    }
+
+    @Override
+    public void draw(Graphics graphics) {
+        graphics.setColor(Color.RED);
+
+        int upperLeftX = this.getX() - getWidth() / 2;
+        int upperLeftY = this.getY() - getHeight() / 2;
+
+        graphics.drawOval(upperLeftX, upperLeftY, getWidth(), getHeight());
+    }
+}

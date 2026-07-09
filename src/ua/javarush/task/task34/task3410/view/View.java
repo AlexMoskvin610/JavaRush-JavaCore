@@ -1,0 +1,48 @@
+package ua.javarush.task.task34.task3410.view;
+
+import ua.javarush.task.task34.task3410.controller.Controller;
+import ua.javarush.task.task34.task3410.controller.EventListener;
+import ua.javarush.task.task34.task3410.model.GameObjects;
+
+import javax.swing.*;
+
+
+public class View extends JFrame {
+    private Controller controller;
+    private Field field;
+
+    public View(Controller controller) {
+        this.controller = controller;
+    }
+
+    public void init() {
+        field = new Field(this);
+        add(field);
+
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setSize(500, 500);
+        setLocationRelativeTo(null);
+        setTitle("Сокобан");
+        setVisible(true);
+    }
+
+    public void setEventListener(EventListener eventListener) {
+        this.field.setEventListener(eventListener);
+    }
+
+    public GameObjects getGameObjects() {
+        return controller.getGameObjects();
+    }
+
+    public void update() {
+        field.repaint();
+    }
+
+    public void completed(int level) {
+        this.update();
+        JOptionPane.showMessageDialog(this,
+                "Level " + level + " completed!", "Congratulations!",
+                JOptionPane.INFORMATION_MESSAGE);
+        controller.startNextLevel();
+    }
+}
