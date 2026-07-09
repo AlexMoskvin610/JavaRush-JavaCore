@@ -40,6 +40,30 @@ public class Model {
     }
 
     public void move(Direction direction) {
+        if(checkWallCollision(gameObjects.getPlayer(), direction)) {
+            return;
+        } else if (checkBoxCollisionAndMoveIfAvailable(direction)) {
+            return;
+        } else {
+            switch (direction) {
+                case UP:
+                    gameObjects.getPlayer().move(0, -FIELD_CELL_SIZE);
+                    break;
+                case DOWN:
+                    gameObjects.getPlayer().move(0, FIELD_CELL_SIZE);
+                    break;
+                case LEFT:
+                    gameObjects.getPlayer().move(-FIELD_CELL_SIZE, 0);
+                    break;
+                case RIGHT:
+                    gameObjects.getPlayer().move(FIELD_CELL_SIZE, 0);
+                    break;
+            }
+
+            checkCompletion();
+        }
+
+
     }
 
     public boolean checkWallCollision(CollisionObject gameObject, Direction direction) {
