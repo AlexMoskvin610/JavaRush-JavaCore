@@ -3,6 +3,8 @@ package ua.javarush.task.task34.task3410.controller;
 import javax.swing.*;
 import java.awt.*;
 import ua.javarush.task.task34.task3410.model.Box;
+import ua.javarush.task.task34.task3410.model.GameObject;
+import ua.javarush.task.task34.task3410.model.Home;
 import ua.javarush.task.task34.task3410.model.Player;
 
 public class TestGraphics extends JPanel {
@@ -18,6 +20,9 @@ public class TestGraphics extends JPanel {
 
         Player player = new Player(50, 50);
         player.draw(g); // Вызываем твой метод отрисовки!
+
+        Home home = new Home(120, 120); // Пример создания объекта Home
+        home.draw(g); // Вызываем твой метод отрисовки!
     }
 
     public static void main(String[] args) {
