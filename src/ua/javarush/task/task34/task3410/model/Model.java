@@ -44,9 +44,47 @@ public class Model {
 
     public boolean checkWallCollision(CollisionObject gameObject, Direction direction) {
        Set<Wall> walls = gameObjects.getWalls();
+
         for (Wall wall : walls) {
             if (gameObject.isCollision(wall, direction)) {
                 return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean checkBoxCollisionAndMoveIfAvailable(Direction direction) {
+        for (Box box : gameObjects.getBoxes()) {
+
+            if (gameObjects.getPlayer().isCollision(box, direction)) {
+
+                if (checkWallCollision(box, direction)) {
+                    return true;
+                }
+
+                for (Box otherBox : gameObjects.getBoxes()) {
+                    if (box.isCollision(otherBox, direction)) {
+                        return true;
+                    }
+                }
+
+                switch (direction) {
+                    case UP:
+                        box.move(0, -FIELD_CELL_SIZE);
+                        break;
+                    case DOWN:
+                        box.move(0, FIELD_CELL_SIZE);
+                        break;
+                    case LEFT:
+                        box.move(-FIELD_CELL_SIZE, 0);
+                        break;
+                    case RIGHT:
+                        box.move(FIELD_CELL_SIZE, 0);
+                        break;
+                }
+
+                return false;
             }
         }
 
