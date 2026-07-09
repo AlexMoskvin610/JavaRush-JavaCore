@@ -18,16 +18,12 @@ public class Model {
         this.eventListener = eventListener;
     }
 
-    public void setGameObjects(GameObjects gameObjects) {
-        this.gameObjects = gameObjects;
-    }
-
     public GameObjects getGameObjects() {
         return gameObjects;
     }
 
     public void restart() {
-
+        restartLevel(currentLevel);
     }
 
     public void startNextLevel() {
@@ -35,12 +31,11 @@ public class Model {
     }
 
     public void restartLevel(int level) {
-        this.currentLevel = level;
-        this.gameObjects = levelLoader.getLevel(level);
+        gameObjects = levelLoader.getLevel(level);
     }
 
     public void move(Direction direction) {
-        if(checkWallCollision(gameObjects.getPlayer(), direction)) {
+        if (checkWallCollision(gameObjects.getPlayer(), direction)) {
             return;
         } else if (checkBoxCollisionAndMoveIfAvailable(direction)) {
             return;
@@ -59,7 +54,7 @@ public class Model {
                     gameObjects.getPlayer().move(FIELD_CELL_SIZE, 0);
                     break;
             }
-            
+
             checkCompletion();
         }
 
@@ -67,7 +62,7 @@ public class Model {
     }
 
     public boolean checkWallCollision(CollisionObject gameObject, Direction direction) {
-       Set<Wall> walls = gameObjects.getWalls();
+        Set<Wall> walls = gameObjects.getWalls();
 
         for (Wall wall : walls) {
             if (gameObject.isCollision(wall, direction)) {
@@ -115,16 +110,16 @@ public class Model {
         return false;
     }
 
-    public void checkCompletion(){
+    public void checkCompletion() {
         Set<Home> homes = gameObjects.getHomes();
         int controlCount = 0;
 
         for (Home home : homes) {
             for (Box box : gameObjects.getBoxes()) {
-               if(home.getX() == box.getX() && home.getY() == box.getY()){
-                   controlCount++;
-                   break;
-               }
+                if (home.getX() == box.getX() && home.getY() == box.getY()) {
+                    controlCount++;
+                    break;
+                }
             }
         }
 
