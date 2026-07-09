@@ -2,6 +2,7 @@ package ua.javarush.task.task34.task3410.view;
 
 import ua.javarush.task.task34.task3410.controller.Controller;
 import ua.javarush.task.task34.task3410.controller.EventListener;
+import ua.javarush.task.task34.task3410.model.GameObjects;
 
 import javax.swing.*;
 
@@ -27,5 +28,13 @@ public class View extends JFrame {
 
     public void setEventListener(EventListener eventListener) {
         this.field.setEventListener(eventListener);
+    }
+
+    public GameObjects getGameObjects() {
+        return controller.getGameObjects();
+    }
+
+    public void update() {
+        field.repaint();
     }
 }
