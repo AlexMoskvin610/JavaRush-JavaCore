@@ -4,7 +4,7 @@ File offset: 148C, DS:00FC, table offset: 0000
 Size X: 22
 Size Y: 11
 End: 14BD
-Length: 50
+Length: 50`
 
     XXXXX             
     X   X             
