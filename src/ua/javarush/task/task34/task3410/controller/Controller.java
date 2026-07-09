@@ -16,8 +16,12 @@ public class Controller implements EventListener {
     public Controller() {
         this.model = new Model();
         this.view = new View(this);
+
         this.view.init();
         this.model.restart();
+
+        this.model.setEventListener(this);
+        this.view.setEventListener(this);
     }
 
     public static void main(String[] args) {
