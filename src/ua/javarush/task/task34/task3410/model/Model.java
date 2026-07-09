@@ -2,17 +2,25 @@ package ua.javarush.task.task34.task3410.model;
 
 import ua.javarush.task.task34.task3410.controller.EventListener;
 
+import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.Set;
 
 public class Model {
     public static final int FIELD_CELL_SIZE = 20;
 
-    private final LevelLoader levelLoader = new LevelLoader(Paths.get("res/levels.txt"));
+    private LevelLoader levelLoader;
 
     private EventListener eventListener;
     private GameObjects gameObjects;
     private int currentLevel = 1;
+
+    public Model() {
+        try {
+            this.levelLoader = new LevelLoader(Paths.get(getClass().getResource("../res/levels.txt").toURI()));
+        } catch (URISyntaxException e) {
+        }
+    }
 
     public void setEventListener(EventListener eventListener) {
         this.eventListener = eventListener;
@@ -57,8 +65,6 @@ public class Model {
 
             checkCompletion();
         }
-
-
     }
 
     public boolean checkWallCollision(CollisionObject gameObject, Direction direction) {
@@ -83,7 +89,7 @@ public class Model {
                 }
 
                 for (Box otherBox : gameObjects.getBoxes()) {
-                    if (box.isCollision(otherBox, direction)) {
+                    if (box != otherBox && box.isCollision(otherBox, direction)) {
                         return true;
                     }
                 }
